@@ -1,3 +1,4 @@
+use crate::user_service::get_user_by_id;
 use crate::{category_service::*, PurchaseInput};
 use crate::models::NewPurchase;
 use crate::purchase_service::*;
@@ -13,6 +14,15 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 pub fn check_new_purchase_valid(conn: &mut SqliteConnection, request: Json<Value>) -> PurchaseInput<NewPurchase> {
+    let input_user_id = match request.get("cat_id")
+        .and_then(|num| num.as_i64())
+        .map(|num| num as i32) {
+            None => return PurchaseInput::InvalidParameters,
+            Some(id) => match get_user_by_id(conn, id) {
+                Err(_) => return PurchaseInput::InvalidParameters,
+                Ok(_) => id,
+            }
+    };
     let input_desc = match request.get("desc").and_then(|desc| desc.as_str()) {
         None => return PurchaseInput::InvalidParameters,
         Some(desc) => desc,
@@ -40,7 +50,7 @@ pub fn check_new_purchase_valid(conn: &mut SqliteConnection, request: Json<Value
                 Ok(_) => category_id
             }
     };
-    PurchaseInput::Valid(NewPurchase{ desc: input_desc.to_owned(), amount: input_amount, date: input_date, cat_id: category_id})
+    PurchaseInput::Valid(NewPurchase{ user_id: input_user_id, desc: input_desc.to_owned(), amount: input_amount, date: input_date, cat_id: category_id})
 }
 
 pub fn check_input_date(input_date: String) -> Option<String> {

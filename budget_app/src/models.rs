@@ -3,6 +3,7 @@ use diesel::Insertable;
 use serde::Deserialize;
 use serde::Serialize;
 
+#[derive(Debug, Clone)]
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
@@ -10,7 +11,7 @@ use serde::Serialize;
 pub struct User {
     pub id: i32,
     pub username: String,
-    pub pw_hash: String
+    pub pw_hash: String,
 }
 
 #[derive(Insertable)]

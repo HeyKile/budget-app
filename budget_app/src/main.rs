@@ -1,6 +1,6 @@
 use budget_app::{
     config::*, 
-    routes::{category_routes::*, purchase_routes::*, overage_routes::*},
+    routes::{category_routes::*, purchase_routes::*, overage_routes::*, auth_routes::*,},
     establish_connection,
 };
 use axum::{
@@ -33,6 +33,8 @@ fn init_db_connection() -> Arc<Mutex<SqliteConnection>> {
 fn init_router(conn: AppState) -> Router {
     Router::new()
         .route("/", get(root))
+        .route("/login", post(login_handler))
+        .route("/logout", post(logout_handler))
         .route("/categories/", get(get_all_categories_handler))
         .route("/categories/", post(post_category_handler))
         .route("/categories/:req_id", get(get_category_handler))

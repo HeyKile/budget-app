@@ -49,7 +49,7 @@ pub async fn get_category_handler(Path(GetIdParam { req_id }): Path<GetIdParam>,
 
 pub async fn post_category_handler(state: Extension<AppState>, Json(request): Json<Value>) -> impl IntoResponse {
     let mut conn = state.conn.lock().unwrap();
-    let new_category = match check_new_category_valid(Json(request)) {
+    let new_category = match check_new_category_valid(&mut conn, Json(request)) {
         CategoryInput::InvalidParameters => return (
             StatusCode::BAD_REQUEST,
             Json(json!({
