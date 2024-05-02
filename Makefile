@@ -1,8 +1,11 @@
 setup:
 	cd budget_app && cargo build
 
-run:
+backend:
 	cd budget_app && cargo run --bin budget_app
+
+frontend:
+	cd budget-app-ui && npm start
 
 initdb:
 	cd budget_app && diesel database reset
