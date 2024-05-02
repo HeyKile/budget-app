@@ -1,5 +1,7 @@
 CREATE TABLE categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    user_id INTEGER NOT NULL,
     name VARCHAR NOT NULL,
-    budget INTEGER
+    budget INTEGER,
+    FOREIGN KEY(user_id) REFERENCES users(id)
 );
