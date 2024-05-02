@@ -4,7 +4,6 @@ use crate::{
     utils::auth_utils::*,
 };
 use axum::{
-    extract::Path, 
     http::StatusCode, 
     response::IntoResponse, 
     Extension, Json
