@@ -1,0 +1,5 @@
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR NOT NULL,
+    budget INTEGER
+);

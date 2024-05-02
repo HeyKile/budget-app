@@ -1,0 +1,8 @@
+CREATE TABLE purchases (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "desc" VARCHAR NOT NULL,
+    amount INTEGER NOT NULL,
+    "date" TEXT NOT NULL,
+    cat_id INTEGER NOT NULL,
+    FOREIGN KEY(cat_id) REFERENCES categories(id)
+);
