@@ -8,14 +8,14 @@ use crate::{
 pub fn validate_new_user_inputs(conn: &mut SqliteConnection, request: Json<Value>) -> NewUserInput<(String, String)> {
     let input_username = match request.get("username").and_then(|name| name.as_str()) {
         None => {
-            return NewUserInput::InvalidUsername
+            return NewUserInput::InvalidParameters
         },
         Some(input_username) => input_username.to_string(),
     };
     let input_pw = match request.get("password").and_then(|pw| pw.as_str()) {
         None => {
             println!("password not found");
-            return NewUserInput::InvalidPassword
+            return NewUserInput::InvalidParameters
         },
         Some(input_pw) => input_pw.to_string(),
     };

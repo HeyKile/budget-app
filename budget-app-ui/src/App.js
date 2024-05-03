@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="App">
-      {isLoggedIn ? <Home /> : <LoginOrRegister />}
+      {isLoggedIn ? <Home/> : <LoginOrRegister/>}
     </div>
   );
 }
@@ -30,7 +30,7 @@ function LoginOrRegister() {
   return (
     <div className={"authContainer"}>
         <button onClick={toggleIsLoggingIn}>
-          {isLoggingIn ? 'Register' : 'Login'}
+          {isLoggingIn ? "Register" : "Login"}
         </button>
         {isLoggingIn ? <Login /> : <Register />}
     </div>

@@ -55,19 +55,7 @@ pub async fn logout_handler(state: Extension<AppState>, Json(request): Json<Valu
 pub async fn register_handler(state: Extension<AppState>, Json(request): Json<Value>) -> impl IntoResponse {
     let mut conn = state.conn.lock().unwrap();
     let (input_username, input_password) = match validate_new_user_inputs(&mut conn, Json(request)) {
-        // NewUserInput::InvalidParameters => return status_bad_request(),
-        NewUserInput::InvalidPassword => return (
-            StatusCode::MOVED_PERMANENTLY,
-            Json(json!({
-                "message": "password couldn't be found"
-            })),
-        ),
-        NewUserInput::InvalidUsername => return (
-            StatusCode::MOVED_PERMANENTLY,
-            Json(json!({
-                "message": "username couldn't be found"
-            })),
-        ),
+        NewUserInput::InvalidParameters => return status_bad_request(),
         NewUserInput::UsernameTaken => return (
             StatusCode::CONFLICT,
             Json(json!({
@@ -77,16 +65,10 @@ pub async fn register_handler(state: Extension<AppState>, Json(request): Json<Va
         NewUserInput::Valid(valid_user) => valid_user,
     };
     let input_pw_hash = match hash_password(&input_password) {
-        // Err(_) => return (
-        //     StatusCode::INTERNAL_SERVER_ERROR,
-        //     Json(json!({
-        //         "message": "error processing request"
-        //     })),
-        // ),
         Err(_) => return (
-            StatusCode::MOVED_PERMANENTLY,
+            StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({
-                "message": "password"
+                "message": "error processing request"
             })),
         ),
         Ok(pw) => pw,

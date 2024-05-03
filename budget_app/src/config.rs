@@ -24,9 +24,7 @@ pub struct GetIdParam {
 }
 
 pub enum NewUserInput<T> {
-    // InvalidParameters,
-    InvalidUsername,
-    InvalidPassword,
+    InvalidParameters,
     UsernameTaken,
     Valid(T),
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 function Home() {
     return (
         <div>
-            <text>Home Screen Baby</text>
+            Home Screen Baby
         </div>
     );
 }
