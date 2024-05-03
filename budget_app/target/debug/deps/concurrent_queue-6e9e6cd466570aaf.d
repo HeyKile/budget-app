@@ -1,9 +1,0 @@
-/home/kyleb453/web-dev/projects/project4-HeyKile/budget_app/target/debug/deps/libconcurrent_queue-6e9e6cd466570aaf.rmeta: /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/lib.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/bounded.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/single.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/unbounded.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/sync.rs
-
-/home/kyleb453/web-dev/projects/project4-HeyKile/budget_app/target/debug/deps/concurrent_queue-6e9e6cd466570aaf.d: /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/lib.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/bounded.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/single.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/unbounded.rs /home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/sync.rs
-
-/home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/lib.rs:
-/home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/bounded.rs:
-/home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/single.rs:
-/home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/unbounded.rs:
-/home/kyleb453/.cargo/registry/src/index.crates.io-6f17d22bba15001f/concurrent-queue-2.4.0/src/sync.rs:
