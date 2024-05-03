@@ -20,7 +20,6 @@ export default function Login ({ setToken }) {
             setLoginError("Error: Invalid Credentials")
             return;
         }
-        // console.log(result);
         setToken(result.token);
         
     }

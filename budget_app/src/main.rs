@@ -52,6 +52,7 @@ fn init_router(conn: AppState) -> Router {
         .route("/purchases/:req_id", get(get_purchase_handler))
         .route("/purchases/:req_id", delete(delete_purchase_handler))
         .route("/overages", post(overages_handler))
+        .route("/users", get(get_users_handler))
         .layer(cors)
         .layer(Extension(conn))
 }

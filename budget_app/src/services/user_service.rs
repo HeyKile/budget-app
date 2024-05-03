@@ -26,3 +26,11 @@ pub fn get_user_by_credentials(conn: &mut SqliteConnection, input_username: Stri
         .filter(pw_hash.eq(input_pw))
         .first(conn)
 }
+
+pub fn get_user_by_username(conn: &mut SqliteConnection, target_username: &str) -> Result<User, diesel::result::Error> {
+    users::table.filter(username.eq(target_username)).first(conn)
+}
+
+pub fn get_users(conn: &mut SqliteConnection) -> Result<Vec<User>, diesel::result::Error> {
+    users::table.load(conn)
+}

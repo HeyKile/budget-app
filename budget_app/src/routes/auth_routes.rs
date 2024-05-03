@@ -14,32 +14,27 @@ pub async fn login_handler(state: Extension<AppState>, Json(request): Json<Value
         Some("") => return status_bad_request(),
         Some(username) => username,
     };
+
     let input_pw = match request.get("password").and_then(|password| password.as_str()) {
         None => return status_bad_request(),
         Some("") => return status_bad_request(),
-        Some(pw) => match hash_password(pw) {
-            Err(_) => return status_bad_request(),
-            Ok(hash_pw) => hash_pw,
-        },
+        Some(pw) => pw,
+    };
+    
+    let mut conn = state.conn.lock().unwrap();
+
+    let found_user = match get_user_by_username(&mut conn, input_username) {
+        Err(_) => return status_bad_request(),
+        Ok(user) => user
     };
 
-    if input_username == "a" {
-        return (
-            StatusCode::OK,
-            Json(json!({
-                "token": "a"
-            }))
-        )
-    }
-
-    let mut conn = state.conn.lock().unwrap();
-    match get_user_by_credentials(&mut conn, input_username.to_string(), input_pw) {
-        Err(_) => status_bad_request(),
-        Ok(user) => (
+    match verify_password(&found_user.pw_hash, input_pw) {
+        false => status_bad_request(),
+        true => (
             StatusCode::OK,
             Json(json!({
                 "message": "successfully logged in",
-                "token": user.id, // TODO: change to return login token
+                "token": found_user.id, // TODO: change to return login token
             }))
         ),
     }
@@ -94,6 +89,25 @@ pub async fn register_handler(state: Extension<AppState>, Json(request): Json<Va
             StatusCode::OK,
             Json(json!({
                 "message": "successfully register user"
+            })),
+        ),
+    }
+}
+
+pub async fn get_users_handler(state: Extension<AppState>) -> impl IntoResponse {
+    let mut conn = state.conn.lock().unwrap();
+    match get_users(&mut conn) {
+        Err(_) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({
+                "message": "error processing request",
+            }))
+        ),
+        Ok(users) => (
+            StatusCode::OK,
+            Json(json!({
+                "message": "successfully register user",
+                "users": users,
             })),
         ),
     }
