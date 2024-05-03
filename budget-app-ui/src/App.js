@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from './login.js';
+import Register from './register.js';
+import Home from './home.js';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("sessionToken");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isLoggedIn ? <Home /> : <LoginOrRegister />}
+    </div>
+  );
+}
+
+function LoginOrRegister() {
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
+
+  const toggleIsLoggingIn = () => {
+    setIsLoggingIn(!isLoggingIn);
+  };
+
+  return (
+    <div className={"authContainer"}>
+        <button onClick={toggleIsLoggingIn}>
+          {isLoggingIn ? 'Register' : 'Login'}
+        </button>
+        {isLoggingIn ? <Login /> : <Register />}
     </div>
   );
 }

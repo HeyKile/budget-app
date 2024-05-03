@@ -22,3 +22,11 @@ pub struct AppState {
 pub struct GetIdParam {
     pub req_id: i32,
 }
+
+pub enum NewUserInput<T> {
+    // InvalidParameters,
+    InvalidUsername,
+    InvalidPassword,
+    UsernameTaken,
+    Valid(T),
+}

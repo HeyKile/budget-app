@@ -27,3 +27,8 @@ async-session = "3.0.0"
 tower-sessions = "0.12.2"
 tower-sessions-sqlx-store = {version = "0.12.0", features = ["sqlite"]}
 jsonwebtoken = "9.3.0"
+warp-cors = "0.3.0"
+warp = "0.3.7"
+tower = "0.4.13"
+tower-http = {version = "0.5.2", features = ["cors"]}
+http = "1.1.0"
