@@ -7,7 +7,7 @@ export default function Login ({ setToken }) {
     const [password, setPassword] = useState("");
     const [loginError, setLoginError] = useState("");
 
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         setLoginError("");
 
         if (username === "" || password === "") {
@@ -15,29 +15,14 @@ export default function Login ({ setToken }) {
             return;
         }
 
-        fetch ("http://localhost:8000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "username": username,
-                "password": password,
-            })
-        })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                throw new Error();
-            }
-        })
-        .then(data => {
-            setToken(data.token);
-        })
-        .catch(() => {
-            setLoginError("Error: Invalid Credentials");
-        });
+        let result = await loginUser(username, password);
+        if (result === -1) {
+            setLoginError("Error: Invalid Credentials")
+            return;
+        }
+        // console.log(result);
+        setToken(result.token);
+        
     }
 
     return (
@@ -66,6 +51,26 @@ export default function Login ({ setToken }) {
     );
 }
 
-Login.propTypes = {
-    setToken: PropTypes.func.isRequired
-};
+// Login.propTypes = {
+//     setToken: PropTypes.func.isRequired
+// };
+
+async function loginUser(username, password) {
+    return fetch ("http://localhost:8000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "username": username,
+                "password": password,
+            })
+        })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                return -1;
+            }
+        });
+}

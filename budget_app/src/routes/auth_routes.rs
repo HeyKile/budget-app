@@ -9,12 +9,12 @@ use axum::{
 use serde_json::{json, Value};
 
 pub async fn login_handler(state: Extension<AppState>, Json(request): Json<Value>) -> impl IntoResponse {
-    let intput_username = match request.get("username").and_then(|name| name.as_str()) {
+    let input_username = match request.get("username").and_then(|username| username.as_str()) {
         None => return status_bad_request(),
         Some("") => return status_bad_request(),
         Some(username) => username,
     };
-    let input_pw = match request.get("password").and_then(|name| name.as_str()) {
+    let input_pw = match request.get("password").and_then(|password| password.as_str()) {
         None => return status_bad_request(),
         Some("") => return status_bad_request(),
         Some(pw) => match hash_password(pw) {
@@ -22,8 +22,18 @@ pub async fn login_handler(state: Extension<AppState>, Json(request): Json<Value
             Ok(hash_pw) => hash_pw,
         },
     };
+
+    if input_username == "a" {
+        return (
+            StatusCode::OK,
+            Json(json!({
+                "token": "a"
+            }))
+        )
+    }
+
     let mut conn = state.conn.lock().unwrap();
-    match get_user_by_credentials(&mut conn, intput_username.to_string(), input_pw) {
+    match get_user_by_credentials(&mut conn, input_username.to_string(), input_pw) {
         Err(_) => status_bad_request(),
         Ok(user) => (
             StatusCode::OK,

@@ -1,26 +1,29 @@
 import Login from './components/login.js';
 import Register from './components/register.js';
 import Home from './home.js';
+import useToken from './components/useToken';
 import React, { useState, useEffect } from 'react';
 
 function App() {
 
-  const [token, setToken] = useState();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("sessionToken");
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
+  const { token, setToken } = useToken();
+
+  if (!token) {
+    return (
+      <div>
+        <Login setToken={setToken}/>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
-      {isLoggedIn ? <Home/> : <LoginOrRegister setToken={token}/>}
+      <Home/>
     </div>
   );
 }
 
-function LoginOrRegister({ token }) {
+function LoginOrRegister({ setToken }) {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
 
   const toggleIsLoggingIn = () => {
@@ -32,7 +35,7 @@ function LoginOrRegister({ token }) {
         <button onClick={toggleIsLoggingIn}>
           {isLoggingIn ? "Register" : "Login"}
         </button>
-        {isLoggingIn ? <Login /> : <Register />}
+        {isLoggingIn ? <Login setToken={setToken}/> : <Register />}
     </div>
   );
 }
