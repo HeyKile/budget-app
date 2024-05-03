@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import { PropTypes } from "prop-types";
 
-function Register() {
+function Register( {token} ) {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -32,10 +33,6 @@ function Register() {
         .then(response => {
             if (response.status === 200) {
                 return response.json();
-            } else if (response.status === 301) {
-                const f = response.json();
-                console.log(f);
-                throw new Error("Error: Problem Creating Account");
             } else if (response.status === 409) {
                 throw new Error("Error: Username Already Taken");
             } else {

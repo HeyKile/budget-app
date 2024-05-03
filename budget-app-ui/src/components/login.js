@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import { PropTypes } from "prop-types";
 
-function Login () {
+export default function Login ({ setToken }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginError, setLoginError] = useState("");
@@ -32,8 +33,7 @@ function Login () {
             }
         })
         .then(data => {
-            console.log(data);
-            localStorage.setItem("sessionToken", data.sessionToken);
+            setToken(data.token);
         })
         .catch(() => {
             setLoginError("Error: Invalid Credentials");
@@ -60,10 +60,12 @@ function Login () {
                 </div>
             </div>
             <div className={"inputContainer"}>
-                <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'} />
+                <input className={'inputButton'} type="button" onClick={onButtonClick} value={"Log in"} />
             </div>
         </div>
     );
 }
 
-export default Login;
+Login.propTypes = {
+    setToken: PropTypes.func.isRequired
+};

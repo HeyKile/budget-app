@@ -29,7 +29,7 @@ pub async fn login_handler(state: Extension<AppState>, Json(request): Json<Value
             StatusCode::OK,
             Json(json!({
                 "message": "successfully logged in",
-                "user_id": user.id,
+                "token": user.id, // TODO: change to return login token
             }))
         ),
     }
@@ -75,9 +75,9 @@ pub async fn register_handler(state: Extension<AppState>, Json(request): Json<Va
     };
     match create_user(&mut conn, NewUser{ username: input_username, pw_hash: input_pw_hash }) {
         Err(_) => (
-            StatusCode::MOVED_PERMANENTLY,
+            StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({
-                "message": "in create",
+                "message": "error processing request",
             }))
         ),
         Ok(_) => (
