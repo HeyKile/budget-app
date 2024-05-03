@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function Home() {
+function Home({ setToken }) {
     return (
         <div>
             Home Screen Baby

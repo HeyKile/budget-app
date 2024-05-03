@@ -6,25 +6,19 @@ import React, { useState, useEffect } from 'react';
 
 function App() {
 
-  const { token, setToken } = useToken();
-
-  if (!token) {
-    return (
-      <div>
-        <Login setToken={setToken}/>
-      </div>
-    );
-  }
+  const [token, setToken] = useState();
 
   return (
     <div className="App">
-      <Home/>
+      {!token ? <LoginOrRegister setToken={setToken}/> : <Home setToken={setToken}/>}
     </div>
   );
 }
 
 function LoginOrRegister({ setToken }) {
+
   const [isLoggingIn, setIsLoggingIn] = useState(true);
+  const [hasRegistered, setHasRegistered] = useState(false);
 
   const toggleIsLoggingIn = () => {
     setIsLoggingIn(!isLoggingIn);
@@ -35,7 +29,7 @@ function LoginOrRegister({ setToken }) {
         <button onClick={toggleIsLoggingIn}>
           {isLoggingIn ? "Register" : "Login"}
         </button>
-        {isLoggingIn ? <Login setToken={setToken}/> : <Register />}
+        {isLoggingIn || hasRegistered ? <Login setToken={setToken}/> : <Register setHasRegistered={setHasRegistered}/>}
     </div>
   );
 }
