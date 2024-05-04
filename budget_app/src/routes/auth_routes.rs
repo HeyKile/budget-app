@@ -1,5 +1,5 @@
 use crate::{
-    auth_service::validate_login, config::*, models::NewUser, services::user_service::*, utils::{auth_utils::*, status_code_utils::*, user_utils::validate_new_user_inputs}
+    auth_service::validate_login, config::*, models::NewUser, register_service::{register_user, RegisterResult}, services::user_service::*, utils::{auth_utils::*, status_code_utils::*, user_utils::validate_new_user_inputs}
 };
 use axum::{
     http::StatusCode, 
@@ -41,37 +41,58 @@ pub async fn logout_handler(state: Extension<AppState>, Json(request): Json<Valu
 
 pub async fn register_handler(state: Extension<AppState>, Json(request): Json<Value>) -> impl IntoResponse {
     let mut conn = state.conn.lock().unwrap();
-    let (input_username, input_password) = match validate_new_user_inputs(&mut conn, Json(request)) {
-        NewUserInput::InvalidParameters => return status_bad_request(),
-        NewUserInput::UsernameTaken => return (
-            StatusCode::CONFLICT,
-            Json(json!({
-                "message": "username already taken"
-            })),
-        ),
-        NewUserInput::Valid(valid_user) => valid_user,
-    };
-    let input_pw_hash = match hash_password(&input_password) {
-        Err(_) => return (
+    // let (input_username, input_password) = match validate_new_user_inputs(&mut conn, Json(request)) {
+    //     NewUserInput::InvalidParameters => return status_bad_request(),
+    //     NewUserInput::UsernameTaken => return (
+    //         StatusCode::CONFLICT,
+    //         Json(json!({
+    //             "message": "username already taken"
+    //         })),
+    //     ),
+    //     NewUserInput::Valid(valid_user) => valid_user,
+    // };
+    // let input_pw_hash = match hash_password(&input_password) {
+    //     Err(_) => return (
+    //         StatusCode::INTERNAL_SERVER_ERROR,
+    //         Json(json!({
+    //             "message": "error processing request"
+    //         })),
+    //     ),
+    //     Ok(pw) => pw,
+    // };
+    // match create_user(&mut conn, NewUser{ username: input_username, pw_hash: input_pw_hash }) {
+    //     Err(_) => (
+    //         StatusCode::INTERNAL_SERVER_ERROR,
+    //         Json(json!({
+    //             "message": "error processing request",
+    //         }))
+    //     ),
+    //     Ok(_) => (
+    //         StatusCode::OK,
+    //         Json(json!({
+    //             "message": "successfully register user"
+    //         })),
+    //     ),
+    // }
+    match register_user(&mut conn, &request) {
+        RegisterResult::InvalidParameters => status_bad_request(),
+        RegisterResult::UsernameTaken => (
+                StatusCode::CONFLICT,
+                Json(json!({
+                    "message": "username already taken"
+                }))
+            ),
+        RegisterResult::ServerError => (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({
                 "message": "error processing request"
-            })),
-        ),
-        Ok(pw) => pw,
-    };
-    match create_user(&mut conn, NewUser{ username: input_username, pw_hash: input_pw_hash }) {
-        Err(_) => (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({
-                "message": "error processing request",
             }))
         ),
-        Ok(_) => (
+        RegisterResult::Success => (
             StatusCode::OK,
             Json(json!({
                 "message": "successfully register user"
-            })),
+            }))
         ),
     }
 }

@@ -4,20 +4,12 @@ use serde_json::{json, Value};
 use crate::{
     models::{NewUser, User}, schema::{users::*, *}, AppState, NewUserInput
 };
+use super::auth_utils::parse_username_password;
 
-pub fn validate_new_user_inputs(conn: &mut SqliteConnection, request: Json<Value>) -> NewUserInput<(String, String)> {
-    let input_username = match request.get("username").and_then(|name| name.as_str()) {
-        None => {
-            return NewUserInput::InvalidParameters
-        },
-        Some(input_username) => input_username.to_string(),
-    };
-    let input_pw = match request.get("password").and_then(|pw| pw.as_str()) {
-        None => {
-            println!("password not found");
-            return NewUserInput::InvalidParameters
-        },
-        Some(input_pw) => input_pw.to_string(),
+pub fn validate_new_user_inputs(conn: &mut SqliteConnection, request: &Value) -> NewUserInput<(String, String)> {
+    let (input_username, input_pw) = match parse_username_password(&request) {
+        None => return NewUserInput::InvalidParameters,
+        Some(parsed_input) => parsed_input,
     };
     match unique_username(conn, &input_username) {
         false => {
