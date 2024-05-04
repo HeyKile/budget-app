@@ -1,5 +1,5 @@
 use crate::{
-    config::*, models::NewUser, services::user_service::*, utils::{auth_utils::*, status_code_utils::*, user_utils::validate_new_user_inputs}
+    auth_service::validate_login, config::*, models::NewUser, services::user_service::*, utils::{auth_utils::*, status_code_utils::*, user_utils::validate_new_user_inputs}
 };
 use axum::{
     http::StatusCode, 
@@ -9,34 +9,16 @@ use axum::{
 use serde_json::{json, Value};
 
 pub async fn login_handler(state: Extension<AppState>, Json(request): Json<Value>) -> impl IntoResponse {
-    let input_username = match request.get("username").and_then(|username| username.as_str()) {
-        None => return status_bad_request(),
-        Some("") => return status_bad_request(),
-        Some(username) => username,
-    };
-
-    let input_pw = match request.get("password").and_then(|password| password.as_str()) {
-        None => return status_bad_request(),
-        Some("") => return status_bad_request(),
-        Some(pw) => pw,
-    };
-    
     let mut conn = state.conn.lock().unwrap();
-
-    let found_user = match get_user_by_username(&mut conn, input_username) {
-        Err(_) => return status_bad_request(),
-        Ok(user) => user
-    };
-
-    match verify_password(&found_user.pw_hash, input_pw) {
-        false => status_bad_request(),
-        true => (
+    match validate_login(&mut conn, request) {
+        None => status_bad_request(),
+        Some(token) => (
             StatusCode::OK,
             Json(json!({
                 "message": "successfully logged in",
-                "token": found_user.id, // TODO: change to return login token
+                "token": token
             }))
-        ),
+        )
     }
 }
 
