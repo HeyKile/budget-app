@@ -1,9 +1,9 @@
 use diesel::SqliteConnection;
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, TokenData, Validation};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use dotenvy::dotenv;
-use std::env;
+use std::{env, time::{SystemTime, UNIX_EPOCH}};
 
 use crate::{user_service::get_user_by_username, utils::auth_utils::verify_password};
 
@@ -49,4 +49,16 @@ pub fn validate_token(token: &str) -> Result<Claims, jsonwebtoken::errors::Error
         Err(e) => Err(e),
         Ok(decoded_token) => Ok(decoded_token.claims)
     }
+}
+
+pub fn check_token_valid(token: &str) -> bool {
+    dotenv().ok();
+    let secret_key = env::var("SECRET_KEY").expect("SECRET_KEY must be set");
+    let validation = Validation::default();
+    let token_data = match decode::<Claims>(token, &DecodingKey::from_secret(secret_key.as_ref()), &validation) {
+        Err(_) => return false,
+        Ok(decoded_token) => decoded_token.claims
+    };
+    let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as usize;
+    token_data.exp <= now
 }

@@ -1,6 +1,7 @@
 use budget_app::{
     config::*, 
     routes::{category_routes::*, purchase_routes::*, overage_routes::*, auth_routes::*,},
+    config::*,
     establish_connection,
 };
 use axum::{
