@@ -41,13 +41,22 @@ pub fn generate_token(user_id: i32) -> Result<String, jsonwebtoken::errors::Erro
     encode(&header, &new_claims, &key)
 }
 
-pub fn validate_token(token: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
+// pub fn validate_token(token: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
+//     dotenv().ok();
+//     let secret_key = env::var("SECRET_KEY").expect("SECRET_KEY must be set");
+//     let validation = Validation::default();
+//     match decode::<Claims>(token, &DecodingKey::from_secret(secret_key.as_ref()), &validation) {
+//         Err(e) => Err(e),
+//         Ok(decoded_token) => Ok(decoded_token.claims)
+//     }
+// }
+pub fn validate_token(token: &str) -> bool {
     dotenv().ok();
     let secret_key = env::var("SECRET_KEY").expect("SECRET_KEY must be set");
     let validation = Validation::default();
     match decode::<Claims>(token, &DecodingKey::from_secret(secret_key.as_ref()), &validation) {
-        Err(e) => Err(e),
-        Ok(decoded_token) => Ok(decoded_token.claims)
+        Err(_) => false,
+        Ok(_) => true
     }
 }
 

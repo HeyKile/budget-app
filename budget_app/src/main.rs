@@ -1,20 +1,15 @@
 use budget_app::{
-    config::*, 
-    routes::{category_routes::*, purchase_routes::*, overage_routes::*, auth_routes::*,},
-    config::*,
-    establish_connection,
+    config::{*}, config::{*}, establish_connection, routes::{auth_routes::*, category_routes::*, overage_routes::*, purchase_routes::*}, services::auth_service::validate_token, utils::auth_utils::get_token
 };
 use axum::{
-    response::IntoResponse, 
-    routing::{delete, get, post},
-     Extension, Json, Router
+    extract::Request, http::{HeaderMap, StatusCode}, middleware::{self, Next}, response::{IntoResponse, Response}, routing::{delete, get, post}, Extension, Json, Router
 };
 use diesel::SqliteConnection;
 use dotenvy::dotenv;
 use serde_json::json;
 use std::{env, sync::{Arc, Mutex}};
 use tower::{ServiceBuilder, ServiceExt, Service};
-use http::{Request, Response, Method, header};
+use http::{header, request, Method};
 use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]
@@ -56,6 +51,16 @@ fn init_router(conn: AppState) -> Router {
         .route("/users", get(get_users_handler))
         .layer(cors)
         .layer(Extension(conn))
+}
+
+async fn auth(headers: HeaderMap, request: Request, next: Next) -> Result<Response, StatusCode> {
+    match get_token(&headers) {
+        Some(token) if validate_token(token) => {
+            let response = next.run(request).await;
+            Ok(response)
+        },
+        _ => Err(StatusCode::UNAUTHORIZED)
+    }
 }
 
 async fn root() -> impl IntoResponse {

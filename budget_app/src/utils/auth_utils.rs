@@ -1,6 +1,7 @@
 use bcrypt::{hash, verify, DEFAULT_COST};
 use diesel::SqliteConnection;
 use serde_json::Value;
+use axum::http::{HeaderMap, StatusCode};
 
 use crate::{models::User, user_service::get_user_by_id};
 
@@ -32,4 +33,8 @@ pub fn parse_username(request: &Value) -> Option<String> {
 
 pub fn parse_password(request: &Value) -> Option<String> {
     Some(request.get("password").and_then(|name| name.as_str())?.to_string())
+}
+
+pub fn get_token(headers: &HeaderMap) -> Option<&str> {
+    headers.get("Authorization")?.to_str().ok()
 }

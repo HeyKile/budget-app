@@ -1,3 +1,4 @@
 # TODOs:
-- send login token when user logs in
-- use login token to authenticate requests to api
+- authenticate login token with middleware
+- fix cors policy
+- react interface
