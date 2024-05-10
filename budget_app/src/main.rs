@@ -49,11 +49,15 @@ fn init_router(conn: AppState) -> Router {
         .route("/purchases/:req_id", delete(delete_purchase_handler))
         .route("/overages", post(overages_handler))
         .route("/users", get(get_users_handler))
-        .layer(cors)
-        .layer(Extension(conn))
+        .layer(
+            ServiceBuilder::new()
+                .layer(cors)
+                // .layer(auth) // TODO: fix to work, figure out how to pass values to next layer
+                .layer(Extension(conn))
+        )
 }
 
-async fn auth(headers: HeaderMap, request: Request, next: Next) -> Result<Response, StatusCode> {
+async fn auth(headers: HeaderMap, request: Request, next: Next) -> impl IntoResponse {
     match get_token(&headers) {
         Some(token) if validate_token(token) => {
             let response = next.run(request).await;
