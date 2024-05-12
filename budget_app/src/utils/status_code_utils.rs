@@ -17,3 +17,7 @@ pub fn status_bad_request() -> (StatusCode, axum::Json<Value>) {
     })))
 }
 
+
+pub fn status_unauthorized() -> (StatusCode, axum::Json<Value>) {
+    (StatusCode::UNAUTHORIZED, Json( json!({ "message": "Unauthorized" }) ) )
+}

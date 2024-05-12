@@ -57,15 +57,17 @@ fn init_router(conn: AppState) -> Router {
         )
 }
 
-async fn auth(headers: HeaderMap, request: Request, next: Next) -> impl IntoResponse {
-    match get_token(&headers) {
-        Some(token) if validate_token(token) => {
-            let response = next.run(request).await;
-            Ok(response)
-        },
-        _ => Err(StatusCode::UNAUTHORIZED)
-    }
-}
+// async fn auth(headers: HeaderMap, request: Request, next: Next) -> impl IntoResponse {
+//     match get_token(&headers) {
+//         Some(token) if validate_token(token) => {
+//             let response = next.run(request).await;
+//             Ok(response)
+//         },
+//         _ => Err(StatusCode::UNAUTHORIZED)
+//     }
+// }
+
+
 
 async fn root() -> impl IntoResponse {
     Json(json!({
