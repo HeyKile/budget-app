@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import { PropTypes } from "prop-types";
 
 export default function Login ({ setToken }) {
@@ -16,12 +16,11 @@ export default function Login ({ setToken }) {
         }
 
         let result = await loginUser(username, password);
-        if (result === -1) {
+        if (result === null) {
             setLoginError("Error: Invalid Credentials")
             return;
         }
         setToken(result.token);
-        
     }
 
     return (
@@ -50,9 +49,6 @@ export default function Login ({ setToken }) {
     );
 }
 
-// Login.propTypes = {
-//     setToken: PropTypes.func.isRequired
-// };
 
 async function loginUser(username, password) {
     return fetch ("http://localhost:8000/login", {
@@ -65,11 +61,8 @@ async function loginUser(username, password) {
                 "password": password,
             })
         })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                return -1;
-            }
+        .then(response => { return response.json()})
+        .then(data => {
+            return data.token ? data.token : null
         });
 }

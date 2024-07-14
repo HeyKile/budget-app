@@ -1,16 +1,15 @@
 use budget_app::{
-    config::{*}, config::{*}, establish_connection, routes::{auth_routes::*, category_routes::*, overage_routes::*, purchase_routes::*}, services::auth_service::validate_token, utils::auth_utils::get_token
+    config::{*}, establish_connection, routes::{auth_routes::*, category_routes::*, overage_routes::*, purchase_routes::*}, services::auth_service::validate_token, utils::auth_utils::get_token
 };
 use axum::{
-    body::Body, extract::Request, http::{HeaderMap, StatusCode}, middleware::{self, Next}, response::{IntoResponse, Response}, routing::{delete, get, post}, Extension, Json, Router
+    body::Body, extract::Request, http::StatusCode, middleware::{self, Next}, response::{IntoResponse, Response}, routing::{delete, get, post}, Extension, Json, Router
 };
 use diesel::SqliteConnection;
 use dotenvy::dotenv;
 use serde_json::json;
-use tower_sessions_sqlx_store::sqlx::query;
 use std::{env, sync::{Arc, Mutex}};
-use tower::{ServiceBuilder, ServiceExt, Service};
-use http::{header, request, Method};
+use tower::ServiceBuilder;
+use http::{header, Method};
 use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]

@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Login from './login';
 import Register from './register';
-import Home from '../home';
+import Home from './home';
+import AuthProvider from './AuthProvider';
 
 export default function Dashboard() {
 
-    const [token, setToken] = useState();
+    const token = getToken();
+
+    if (!token) {
+      return <Login setToken={setToken}></Login>
+    }
 
     return (
         <div className="App">
-          {!token ? <LoginOrRegister setToken={setToken}/> : <Home setToken={setToken}/>}
+          <Home setToken={setToken}/>
         </div>
       );
 
