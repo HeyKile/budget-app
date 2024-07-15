@@ -47,18 +47,21 @@ fn init_router(conn: AppState) -> Router {
         .route("/purchases/:req_id", delete(delete_purchase_handler))
         .route("/overages", post(overages_handler))
         .route("/users", get(get_users_handler))
-        .layer(ServiceBuilder::new().layer(middleware::from_fn(auth_middleware))); // TODO: fix to work
+        .layer(Extension(conn.clone()))
+        .layer(cors);
+    auth_routes
+        // .layer(ServiceBuilder::new().layer(middleware::from_fn(auth_middleware))); // TODO: fix to work
 
-    Router::new()
-        .route("/", get(root))
-        .route("/login", post(login_handler))
-        .route("/register", post(register_handler))
-        .nest("/auth", auth_routes)
-        .layer(
-            ServiceBuilder::new()
-                .layer(Extension(conn.clone()))
-                .layer(cors)
-        )
+    // Router::new()
+    //     .route("/", get(root))
+    //     .route("/login", post(login_handler))
+    //     .route("/register", post(register_handler))
+    //     .nest("/auth", auth_routes)
+    //     .layer(
+    //         ServiceBuilder::new()
+    //             .layer(Extension(conn.clone()))
+    //             .layer(cors)
+    //     )
 }
 
 async fn auth_middleware(request: Request, next: Next) -> Response {

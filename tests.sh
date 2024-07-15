@@ -31,6 +31,8 @@
 
 # curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/categories/1
 
+curl -X GET -H "Content-Type: application/json" http://localhost:3000/categories/
+
 # Testing overages
 echo "Test overages"
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Groceries","budget":200}' http://localhost:3000/categories/
