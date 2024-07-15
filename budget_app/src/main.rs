@@ -47,6 +47,7 @@ fn init_router(conn: AppState) -> Router {
         .route("/purchases/:req_id", delete(delete_purchase_handler))
         .route("/overages", post(overages_handler))
         .route("/users", get(get_users_handler))
+        .route("/register", post(register_handler))
         .layer(Extension(conn.clone()))
         .layer(cors);
     auth_routes
