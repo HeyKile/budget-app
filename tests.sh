@@ -31,7 +31,8 @@
 
 # curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/categories/1
 
-curl -X GET -H "Content-Type: application/json" http://localhost:3000/categories/
+curl -X GET -H "Content-Type: application/json" http://localhost:8000/categories/
+curl -X POST -H "Content-Type: application/json" -d '{"username":"a", "password":"a"}' http://localhost:8000/register
 
 # Testing overages
 echo "Test overages"

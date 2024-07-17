@@ -109,7 +109,6 @@ pub async fn get_users_handler(state: Extension<AppState>) -> impl IntoResponse 
         Ok(users) => (
             StatusCode::OK,
             Json(json!({
-                "message": "successfully register user",
                 "users": users,
             })),
         ),
