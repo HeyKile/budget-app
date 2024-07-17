@@ -22,5 +22,5 @@ pub fn check_new_category_valid(conn: &mut SqliteConnection, request: Json<Value
         .and_then(|num| num.as_i64())
         .map(|num| num as i32);
     // TODO: Fix
-    CategoryInput::Valid(NewCategory{ user_id: 0, name: input_name.to_string(), budget: input_budget })
+    CategoryInput::Valid(NewCategory{ user_id: 1, name: input_name.to_string(), budget: input_budget })
 }

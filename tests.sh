@@ -33,6 +33,8 @@
 
 curl -X GET -H "Content-Type: application/json" http://localhost:8000/categories/
 curl -X POST -H "Content-Type: application/json" -d '{"username":"a", "password":"a"}' http://localhost:8000/register
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Groceries","budget":200}' http://localhost:8000/categories/
+
 
 # Testing overages
 echo "Test overages"
