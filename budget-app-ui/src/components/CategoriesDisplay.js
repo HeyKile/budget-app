@@ -43,7 +43,7 @@ function CategoriesDisplay() {
             <ul>
                 {categories.length > 0 ? (
                     categories.map(category => (
-                        <li key={category.id}>{category.name}</li>
+                        <li key={category.id}>{category.name}: {category.budget}</li>
                     ))
                 ) : (
                     <li>No categories found</li>

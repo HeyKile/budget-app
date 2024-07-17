@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Login from './components/login';
 import Dashboard from './components/Dashboard';
 import CategoriesDisplay from './components/CategoriesDisplay';
+import CategoryCreator from './components/CategoryCreator';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <div className="App">
+      <CategoryCreator />
       <CategoriesDisplay/>
     </div>
   );
