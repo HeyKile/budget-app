@@ -14,7 +14,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 pub fn check_new_purchase_valid(conn: &mut SqliteConnection, request: Json<Value>) -> PurchaseInput<NewPurchase> {
-    let input_user_id = match request.get("cat_id")
+    let input_user_id = match request.get("user_id")
         .and_then(|num| num.as_i64())
         .map(|num| num as i32) {
             None => return PurchaseInput::InvalidParameters,
@@ -28,22 +28,18 @@ pub fn check_new_purchase_valid(conn: &mut SqliteConnection, request: Json<Value
         Some(desc) => desc,
     };
     let input_amount = match request.get("amount")
-        .and_then(|num| num.as_i64())
-        .map(|num| num as i32) {
+        .and_then(|num| num.as_str())
+        .and_then(|num_str| num_str.parse::<i32>().ok()) {
             None => return PurchaseInput::InvalidParameters,
             Some(amount) => amount,
     };
     let input_date = match request.get("date").and_then(|input_date| input_date.as_str()) {
         None => return PurchaseInput::InvalidParameters,
-        Some(date_str) => {
-            match check_input_date(date_str.to_owned()) {
-            None => return PurchaseInput::InvalidParameters,
-            Some(valid_date) => valid_date,
-        }}
+        Some(date_str) => date_str.to_string()
     };
     let category_id = match request.get("cat_id")
-        .and_then(|num| num.as_i64())
-        .map(|num| num as i32) {
+        .and_then(|num| num.as_str())
+        .and_then(|num_str| num_str.parse::<i32>().ok()) {
             None => return PurchaseInput::InvalidCategory,
             Some(category_id) => match get_category_by_id(conn, category_id) {
                 Err(_) => return PurchaseInput::InvalidCategory,
@@ -58,6 +54,7 @@ pub fn check_input_date(input_date: String) -> Option<String> {
         Err(_) => return None,
         Ok(regex) => regex,
     };
+    println!("{}", &input_date);
     if date_regex.is_match(&input_date) {
         Some(input_date)
     } else {

@@ -3,6 +3,8 @@ import Login from './components/login';
 import Dashboard from './components/Dashboard';
 import CategoriesDisplay from './components/CategoriesDisplay';
 import CategoryCreator from './components/CategoryCreator';
+import PurchaseDisplay from './components/PurchaseDisplay';
+import PurchaseCreator from './components/PurchaseCreator';
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
     <div className="App">
       <CategoryCreator />
       <CategoriesDisplay/>
+      <PurchaseDisplay/>
+      <PurchaseCreator/>
     </div>
   );
 }
