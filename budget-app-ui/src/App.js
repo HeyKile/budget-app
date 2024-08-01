@@ -23,10 +23,14 @@ function App() {
 
   return (
     <div className="App">
-      <CategoryCreator />
-      <CategoriesDisplay/>
-      <PurchaseDisplay/>
-      <PurchaseCreator/>
+      <div className="display-container">
+        <CategoryCreator/>
+        <CategoriesDisplay/>
+      </div>
+      <div className="display-container">
+        <PurchaseCreator/>
+        <PurchaseDisplay/>
+      </div>
     </div>
   );
 }

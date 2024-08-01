@@ -45,6 +45,7 @@ fn init_router(conn: AppState) -> Router {
         .route("/purchases/", post(post_purchase_handler))
         .route("/purchases/:req_id", get(get_purchase_handler))
         .route("/purchases/:req_id", delete(delete_purchase_handler))
+        .route("/purchases/all/by-month", get(get_all_purchases_by_month_handler))
         .route("/overages", post(overages_handler))
         .route("/users", get(get_users_handler))
         .route("/register", post(register_handler))

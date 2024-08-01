@@ -103,3 +103,21 @@ pub async fn delete_purchase_handler(Path(GetIdParam { req_id }): Path<GetIdPara
         ),
     }
 }
+
+pub async fn get_all_purchases_by_month_handler(state: Extension<AppState>) -> impl IntoResponse {
+    let mut conn = state.conn.lock().unwrap();
+    match get_all_purchases_by_month(&mut *conn) {
+        Err(error) => (
+            StatusCode::NOT_FOUND,
+            Json(json!({
+                "message": error.to_string()
+            }))
+        ),
+        Ok(purchases) => (
+            StatusCode::OK,
+            Json(json!({
+                "purchases": purchases
+            }))
+        ),
+    }
+}

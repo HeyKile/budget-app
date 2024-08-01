@@ -20,3 +20,18 @@ form {
     max-width: fit-content;
   }
 }
+
+.display-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  div {
+    margin: 1em;
+    text-align: center;
+
+    select {
+      text-align: left;
+    }
+  }
+}

@@ -55,7 +55,7 @@ function CategoryCreator() {
     }
 
     return (
-        <div>
+        <div className='category-creator'>
             <h2>Create New Category</h2>
             {error !== null && <p>Error: {error.message}</p>}
             <form onSubmit={createCategory}>

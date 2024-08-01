@@ -42,11 +42,11 @@ function PurchaseDisplay() {
 
     return (
         <div>
-            <p>All Purchases</p>
+            <h2>All Purchases</h2>
             <ul>
                 {purchases.length > 0 ? (
                     purchases.map(purchase => (
-                        <li key={purchase.id}>{purchase.desc}: ${purchase.amount} on {purchase.date}</li>
+                        <li key={purchase.id}>{purchase.desc}: ${purchase.amount} on {purchase.date} in category {purchase.cat_id}</li>
                     ))
                 ) : (
                     <li>No purchases found</li>
