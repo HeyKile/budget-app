@@ -13,7 +13,7 @@ db = SQLAlchemy(model_class=Base)
 class User(db.Model):
     __tablename__ = "users"
 
-    userId = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     username = Column(String(64), nullable=False, unique=True)
     pwHash = Column(String(64), nullable=False)
 
@@ -23,7 +23,7 @@ class User(db.Model):
 
     def to_dict(self):
         return {
-            "userId": self.userId,
+            "id": self.id,
             "username": self.username
         }
 
@@ -31,8 +31,8 @@ class User(db.Model):
 class Category(db.Model):
     __tablename__ = "categories"
 
-    catId = Column(Integer, primary_key=True)
-    userId = Column(Integer, ForeignKey("users.userId"))
+    id = Column(Integer, primary_key=True)
+    userId = Column(Integer, ForeignKey("users.id"))
     name = Column(String(64), nullable=False)
     budget = Column(Integer)
 
@@ -43,7 +43,7 @@ class Category(db.Model):
 
     def to_dict(self):
         return {
-            "catId": self.catId,
+            "id": self.id,
             "userId": self.userId,
             "name": self.name,
             "budget": self.budget
@@ -53,9 +53,9 @@ class Category(db.Model):
 class Purchase(db.Model):
     __tablename__ = "purchases"
 
-    purchaseId = Column(Integer, primary_key=True)
-    userId = Column(Integer, ForeignKey("users.userId"))
-    catId = Column(Integer, ForeignKey("categories.catId"))
+    id = Column(Integer, primary_key=True)
+    userId = Column(Integer, ForeignKey("users.id"))
+    catId = Column(Integer, ForeignKey("categories.id"))
     desc = Column(Text, nullable=False)
     amount = Column(Float, nullable=False)
     datetime = Column(db.DateTime, nullable=False)
@@ -69,7 +69,7 @@ class Purchase(db.Model):
 
     def to_dict(self):
         return {
-            "purchaseId": self.purchaseId,
+            "id": self.id,
             "userId": self.userId,
             "catId": self.catId,
             "desc": self.desc,

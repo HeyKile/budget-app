@@ -13,8 +13,8 @@ initdb:
 test:
 	chmod +x tests.sh && ./tests.sh
 
-flask run:
-	cd budget-app-api && python3 -m flask && flask --app budget_app run
+flask-run:
+	cd budget-app-api && python3 budget_app.py
 
-flask initdb:
+flask-initdb:
 	cd budget-app-api && flask --app budget_app.py initdb

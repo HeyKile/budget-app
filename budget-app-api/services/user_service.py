@@ -22,3 +22,11 @@ def get_user_by_username(username):
     except Exception as e:
         return str(e)
     
+def validate_login(username, password):
+    try:
+        user = get_user_by_username(username=username)
+        if not check_password_hash(pwhash=user.pwHash, password=password):
+            raise ValueError("Passwords do not match") 
+        return (user.id, None)
+    except Exception as e:
+        return (None, str(e))
