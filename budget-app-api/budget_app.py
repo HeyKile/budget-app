@@ -91,28 +91,36 @@ def login_handler():
         response = jsonify({"Error": "username and password required"})
         code = HTTPStatus.BAD_REQUEST
         return make_response(response), code
-    (user_id, err) = validate_login(username=request.json["username"], password=request.json["password"])
-    if user_id is None:
+    (user, err) = validate_login(username=request.json["username"], password=request.json["password"])
+    if user is None:
         response = jsonify({"Error": err})
         code = HTTPStatus.NOT_FOUND
         return make_response(response), code
-    access_token = create_access_token(identity=user_id)
+    access_token = create_access_token(identity=user.id)
     response = jsonify({
         "message": "Successfully logged in user",
-        "access_token": access_token
+        "access_token": access_token,
+        "user": user.to_dict()
     })
     code = HTTPStatus.OK
     return make_response(response), code
 
 @app.route("/budget-app/api/users/logout", methods=["POST"])
 @jwt_required()
-def logout():
+def logout_handler():
     response, code = "", -1
     jti = get_jwt()['jti']
     blacklist.add(jti)
     response = jsonify({"message": "Successfully logged out"})
     code = HTTPStatus.OK
     return make_response(response), code
+
+@app.route("/budget-app/api/users/validate-token", methods=["GET"])
+@jwt_required()
+def validate_token_handler():
+    if request.method == "OPTIONS":
+        return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
+    return jsonify({"valid": True}), HTTPStatus.OK
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -27,6 +27,6 @@ def validate_login(username, password):
         user = get_user_by_username(username=username)
         if not check_password_hash(pwhash=user.pwHash, password=password):
             raise ValueError("Passwords do not match") 
-        return (user.id, None)
+        return (user, None)
     except Exception as e:
         return (None, str(e))

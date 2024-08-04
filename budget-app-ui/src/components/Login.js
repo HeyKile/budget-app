@@ -2,7 +2,7 @@ import React from "react";
 import { useState, createContext, useContext } from "react";
 import { PropTypes } from "prop-types";
 
-function Login({ setToken, setAuthErr }) {
+function Login({ setToken, setUser, setAuthErr }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loginErr, setLoginErr] = useState(null);
@@ -26,6 +26,8 @@ function Login({ setToken, setAuthErr }) {
         .then(data => {
           localStorage.setItem("access_token", data.access_token)
           setToken(data.access_token);
+          localStorage.setItem("user",JSON.stringify(data.user));
+          setUser(data.user);
           setUsername("");
           setPassword("");
         })
