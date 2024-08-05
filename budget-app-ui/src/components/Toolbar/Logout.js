@@ -4,7 +4,7 @@ import UserTokenContext from "../UserTokerContext";
 function Logout({ setToken, setUser }) {
     const token = useContext(UserTokenContext);
 
-    const logoutHandler = async (token) => {
+    const logoutHandler = async () => {
         fetch("http://localhost:5000/budget-app/api/users/logout", {
             method: "POST",
             headers: {
@@ -13,9 +13,10 @@ function Logout({ setToken, setUser }) {
                 "Authorization": `Bearer ${token}`
             }
         })
-        .then(() => { setToken(null) })
         .catch((error) => {
             console.error(error); 
+        })
+        .finally(() => {
             setToken(null); 
             localStorage.removeItem("access_token");
             setUser(null);

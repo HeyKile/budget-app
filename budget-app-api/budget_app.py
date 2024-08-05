@@ -48,7 +48,7 @@ def check_if_token_in_blocklist(jwt_header, jwt_data):
 def root():
     return "hello"
 
-@app.route("/budget-app/api/users/create", methods=["POST"])
+@app.route("/budget-app/api/users/register", methods=["POST"])
 def create_user_handler():
     response, code = "", -1
     if not request.json["username"] or not request.json["password"]:

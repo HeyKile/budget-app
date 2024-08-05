@@ -1,13 +1,8 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import CategoriesDisplay from './components/CategoriesDisplay';
-import CategoryCreator from './components/CategoryCreator';
-import PurchaseDisplay from './components/PurchaseDisplay';
-import PurchaseCreator from './components/PurchaseCreator';
 import ToolBar from './components/Toolbar/ToolBar';
 import UserTokenContext from './components/UserTokerContext';
-import Logout from './components/Toolbar/Logout';
+import Register from './components/Register';
 
 function App() {
 
@@ -15,12 +10,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [authErr, setAuthErr] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [registering, setRegistering] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     const storedToken = localStorage.getItem("access_token");
     if (storedToken) {
-      // setToken(storedToken);
       validateToken(storedToken);
     } else {
       setLoading(false);
@@ -69,8 +64,13 @@ function App() {
   if (!token) {
     return (
       <div>
+        <button onClick={() => setRegistering(!registering)}>Swap</button>
         {authErr !== null && <h2>{authErr}</h2>}
-        <Login setToken={setToken} setUser={setUser} setAuthErr={setAuthErr}/>
+        {registering === false ? (
+          <Login setToken={setToken} setUser={setUser} setAuthErr={setAuthErr}/>
+        ) : (
+          <Register setRegistering={setRegistering}/>
+        )}
       </div>
     );
   }
@@ -79,7 +79,7 @@ function App() {
     <UserTokenContext.Provider value={token}>
       <div className="App">
         <h1>Hello, {user.username}</h1>
-        <ToolBar token={token} setToken={setToken}/>
+        <ToolBar setUser={setUser} setToken={setToken}/>
       </div>
     </UserTokenContext.Provider>
   );
