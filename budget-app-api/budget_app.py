@@ -122,5 +122,12 @@ def validate_token_handler():
         return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
     return jsonify({"valid": True}), HTTPStatus.OK
 
+@app.route("/budget-app/api/category/create", methods=["POST"])
+@jwt_required()
+def create_category_handler():
+    if request.method == "OPTIONS":
+        return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
+    current_user = get_jwt_identity()
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

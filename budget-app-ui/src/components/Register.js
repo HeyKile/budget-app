@@ -68,7 +68,7 @@ function Register({ setRegistering }) {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </label>
-                <button type="submit">Login</button>
+                <button type="submit">Register</button>
         </form>
     );
 

@@ -15,11 +15,11 @@ class User(db.Model):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(64), nullable=False, unique=True)
-    pwHash = Column(String(64), nullable=False)
+    pw_hash = Column(String(64), nullable=False)
 
     def __init__(self, username, pw_hash):
         self.username = username
-        self.pwHash = pw_hash
+        self.pw_hash = pw_hash
 
     def to_dict(self):
         return {
@@ -32,19 +32,19 @@ class Category(db.Model):
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key=True)
-    userId = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String(64), nullable=False)
     budget = Column(Integer)
 
-    def __init__(self, catId, userId, name, budget):
-        self.userId = userId
+    def __init__(self, user_id, name, budget):
+        self.user_id = user_id
         self.name = name
         self.budget = budget
 
     def to_dict(self):
         return {
             "id": self.id,
-            "userId": self.userId,
+            "user_id": self.user_id,
             "name": self.name,
             "budget": self.budget
         }
@@ -54,15 +54,15 @@ class Purchase(db.Model):
     __tablename__ = "purchases"
 
     id = Column(Integer, primary_key=True)
-    userId = Column(Integer, ForeignKey("users.id"))
-    catId = Column(Integer, ForeignKey("categories.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    cat_id = Column(Integer, ForeignKey("categories.id"))
     desc = Column(Text, nullable=False)
     amount = Column(Float, nullable=False)
     datetime = Column(db.DateTime, nullable=False)
 
-    def __init__(self, userId, catId, desc, amount, datetime):
-        self.userId = userId
-        self.catId = catId
+    def __init__(self, user_id, cat_id, desc, amount, datetime):
+        self.user_id = user_id
+        self.cat_id = cat_id
         self.desc = desc
         self.amount = amount
         self.datetime = datetime
@@ -70,8 +70,8 @@ class Purchase(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "userId": self.userId,
-            "catId": self.catId,
+            "user_id": self.user_id,
+            "cat_id": self.cat_id,
             "desc": self.desc,
             "amount": self.amount,
             "datetime": self.datetime
