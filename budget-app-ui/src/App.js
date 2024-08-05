@@ -1,10 +1,12 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Login from './components/Login';
 import ToolBar from './components/Toolbar/ToolBar';
-import UserTokenContext from './components/UserTokerContext';
+import UserTokenContext from './components/UserTokenContext';
 import Register from './components/Register';
 import CategoryCreator from './components/CategoryCreator';
 import CategoriesDisplay from './components/CategoriesDisplay';
+import NavBar from './components/NavBar';
+import UserContext from "./components/UserContext";
 
 function App() {
 
@@ -79,12 +81,15 @@ function App() {
 
   return (
     <UserTokenContext.Provider value={token}>
-      <div className="App">
-        <h1>Hello, {user.username}</h1>
-        <ToolBar setUser={setUser} setToken={setToken}/>
-        <CategoryCreator user={user} />
-        <CategoriesDisplay/>
-      </div>
+      <UserContext.Provider value={user}>
+        <div className="App">
+          <h1>Hello, {user.username}</h1>
+          <ToolBar setUser={setUser} setToken={setToken}/>
+          {/* <CategoryCreator user={user} />
+          <CategoriesDisplay/> */}
+          <NavBar/>
+        </div>
+      </UserContext.Provider>
     </UserTokenContext.Provider>
   );
 }

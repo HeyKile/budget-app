@@ -22,3 +22,9 @@ def get_all_categories():
         return db.session.query(Category).all()
     except Exception as _:
         return None
+    
+def get_category_by_id(cat_id):
+    try:
+        return db.session.query(Category).filter_by(id=cat_id).first()
+    except Exception as _:
+        return None

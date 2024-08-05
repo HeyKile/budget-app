@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import UserTokenContext from "./UserTokenContext";
+import UserContext from "./UserContext";
 
 function PurchaseDisplay() {
+
+    const token = useContext(UserTokenContext);
+    const user = useContext(UserContext);
 
     const [purchases, setPurchases] = useState([]);
     // const [curCategory, setCurCategory] = useState(null);
@@ -8,10 +13,12 @@ function PurchaseDisplay() {
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        fetch("http://localhost:8000/purchases/", {
+        fetch("http://localhost:5000/budget-app/api/purchase/get", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                'Origin': 'http://localhost:3000',
+                "Authorization": `Bearer ${token}`
             },
         })
         .then(response => {

@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import UserTokenContext from "./UserTokenContext";
 
-function PurchaseCreator() {
+function PurchaseCreator({ user, setShowPurchaseCreator }) {
+    const token = useContext(UserTokenContext);
     const [desc, setDesc] = useState("");
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState("");
-    const [catId, setCatId] = useState(0);
+    const [curCategory, setCurCategory] = useState(0);
     const [statusMsg, setStatusMsg] = useState("");
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:8000/categories/", {
+        fetch("http://localhost:5000/budget-app/api/category/get", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                'Origin': 'http://localhost:3000',
+                "Authorization": `Bearer ${token}`
             },
         })
         .then(response => {
@@ -25,6 +29,7 @@ function PurchaseCreator() {
         })
         .then(data => {
             setCategories(data.categories);
+            setCurCategory(data.categories[0]);
             setLoading(false);
         })
         .catch(error => {
@@ -39,18 +44,20 @@ function PurchaseCreator() {
         console.log(desc);
         console.log(amount);
         console.log(date);
-        console.log(catId);
-        fetch("http://localhost:8000/purchases/", {
+        console.log(curCategory);
+        const catId = curCategory.id;
+        fetch("http://localhost:5000/budget-app/api/purchase/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Origin': 'http://localhost:3000',
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
-                "user_id": 1, //TODO: add functionality
-                "desc": desc,
-                "amount": amount,
-                "date": date,
-                "cat_id": catId
+                desc,
+                amount,
+                date,
+                catId
             }),
         })
         .then(response => {
@@ -64,7 +71,7 @@ function PurchaseCreator() {
             setDesc("");
             setAmount(0);
             setDate("");
-            setCatId(0);
+            setCurCategory(0);
         })
         .catch(error => {
             console.error(error);
@@ -81,7 +88,7 @@ function PurchaseCreator() {
     }
 
     return (
-        <div>
+        <div className="create-purchase-modal">
             <h2>Create New Purchase</h2>
             {statusMsg !== "" && <p>{statusMsg}</p>}
             <form onSubmit={createPurchase}>
@@ -99,7 +106,7 @@ function PurchaseCreator() {
                 </label>
                 <label>
                     Category:
-                    <select value={catId} onChange={(e) => setCatId(e.target.value)}>
+                    <select value={curCategory} onChange={(e) => setCurCategory(e.target.value)}>
                         {categories.map(category => (
                             <option key={category.id} value={category.id}>{category.name} (${category.budget})</option>
                         ))}
@@ -107,6 +114,7 @@ function PurchaseCreator() {
                 </label>
                 <button type="submit">Submit Purchase</button>
             </form>
+            <button onClick={() => setShowPurchaseCreator(false)}>X</button>
         </div>
     );
 }

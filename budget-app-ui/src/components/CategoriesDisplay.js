@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import UserTokenContext from './UserTokerContext';
+import UserTokenContext from './UserTokenContext';
 
 function CategoriesDisplay() {
 
@@ -50,7 +50,7 @@ function CategoriesDisplay() {
             <ul>
                 {categories.length > 0 ? (
                     categories.map(category => (
-                        <li key={category.id}>{category.name}: {category.budget} ({category.id}) ({category.user_id})</li>
+                        <li key={category.id}>{category.name}: {category.budget} ({category.id})</li>
                     ))
                 ) : (
                     <li>No categories found</li>
