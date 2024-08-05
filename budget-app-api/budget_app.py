@@ -8,10 +8,11 @@ import os
 from models.models import db, User, Category, Purchase
 from http import HTTPStatus
 from utils.user_utils import check_username_unique
-from services.user_service import create_user, get_users, validate_login
+from services.user_service import create_user, get_user_by_id, get_users, validate_login
 from werkzeug.security import generate_password_hash
 from datetime import timedelta
 from flask_cors import CORS, cross_origin
+from services.category_service import create_category, get_all_categories, get_categories_by_id
 
 app = Flask(__name__)
 app.debug = True
@@ -127,7 +128,30 @@ def validate_token_handler():
 def create_category_handler():
     if request.method == "OPTIONS":
         return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
-    current_user = get_jwt_identity()
+    user_id = get_jwt_identity()
+    if get_user_by_id(user_id) is None:
+        return jsonify({"message": "user cannot be found"}), HTTPStatus.GONE
+    category_data = request.json
+    if not category_data["name"] or not category_data["budget"]:
+        return jsonify({"message": "Name and budget required"}), HTTPStatus.BAD_REQUEST
+    res = create_category(user_id=user_id, name=category_data["name"], budget=category_data["budget"])
+    if res is not True:
+        return jsonify({"message": "Error creating category"}), HTTPStatus.INTERNAL_SERVER_ERROR
+    return jsonify({"message": "Successfully created category"}), HTTPStatus.OK
+
+@app.route("/budget-app/api/category/get", methods=["GET"])
+@jwt_required()
+def get_categories_handler():
+    if request.method == "OPTIONS":
+        return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
+    user_id = get_jwt_identity()
+    if get_user_by_id(user_id) is None:
+        return jsonify({"message": "user cannot be found"}), HTTPStatus.GONE
+    categories = get_categories_by_id(user_id=user_id)
+    if categories is None:
+        return jsonify({ "categories": [] }), HTTPStatus.OK
+    else:
+        return jsonify({ "categories": [category.to_dict() for category in categories] }), HTTPStatus.OK
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

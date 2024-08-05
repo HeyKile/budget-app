@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import UserTokenContext from './UserTokerContext';
 
-function CategoryCreator() {
+function CategoryCreator({ user }) {
+
+    const token = useContext(UserTokenContext);
+
     const [name, setName] = useState("");
     const [budget, setBudget] = useState("");
     const [error, setError] = useState(null);
@@ -25,16 +29,15 @@ function CategoryCreator() {
             "budget": budget
         }));
         event.preventDefault();
-        fetch("http://localhost:8000/categories/", {
+        const userId = user.id;
+        fetch("http://localhost:5000/budget-app/api/category/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Origin': 'http://localhost:3000',
+                "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({
-                //TODO: add user id
-                "name": name,
-                "budget": budget
-            })
+            body: JSON.stringify({ "user_id": userId, name, budget })
         })
         .then(response => {
             if (!response.ok) {

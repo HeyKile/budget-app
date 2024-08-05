@@ -3,6 +3,8 @@ import Login from './components/Login';
 import ToolBar from './components/Toolbar/ToolBar';
 import UserTokenContext from './components/UserTokerContext';
 import Register from './components/Register';
+import CategoryCreator from './components/CategoryCreator';
+import CategoriesDisplay from './components/CategoriesDisplay';
 
 function App() {
 
@@ -80,6 +82,8 @@ function App() {
       <div className="App">
         <h1>Hello, {user.username}</h1>
         <ToolBar setUser={setUser} setToken={setToken}/>
+        <CategoryCreator user={user} />
+        <CategoriesDisplay/>
       </div>
     </UserTokenContext.Provider>
   );

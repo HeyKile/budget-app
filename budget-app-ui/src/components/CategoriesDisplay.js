@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import UserTokenContext from './UserTokerContext';
 
 function CategoriesDisplay() {
+
+    const token = useContext(UserTokenContext);
+
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:8000/categories/", {
+        fetch("http://localhost:5000/budget-app/api/category/get", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                'Origin': 'http://localhost:3000',
+                "Authorization": `Bearer ${token}`
             },
         })
         .then(response => {
@@ -19,6 +25,7 @@ function CategoriesDisplay() {
             return response.json();
         })
         .then(data => {
+            console.log(data);
             setCategories(data.categories);
             setLoading(false);
         })
@@ -43,7 +50,7 @@ function CategoriesDisplay() {
             <ul>
                 {categories.length > 0 ? (
                     categories.map(category => (
-                        <li key={category.id}>{category.name}: {category.budget} ({category.id})</li>
+                        <li key={category.id}>{category.name}: {category.budget} ({category.id}) ({category.user_id})</li>
                     ))
                 ) : (
                     <li>No categories found</li>
