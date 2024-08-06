@@ -1,5 +1,6 @@
-from models.models import db, Purchase
+from models.models import db, Purchase, Category
 from werkzeug.security import check_password_hash
+from sqlalchemy import text
 
 def create_purchase(user_id, desc, amount, datetime, cat_id):
     try:

@@ -14,7 +14,6 @@ function Overview() {
             {showPurchaseCreator && <PurchaseCreator setShowPurchaseCreator={setShowPurchaseCreator}/>}
             <div className="recent-purchases-container">
                 <RecentPurchaseDisplay/>
-                <PurchaseDisplay/>
             </div>
         </div>
     );

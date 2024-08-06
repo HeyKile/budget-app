@@ -1,40 +1,43 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserTokenContext from './UserTokenContext';
+import { DataContext } from './DataContext';
 
 function CategoriesDisplay() {
 
     const token = useContext(UserTokenContext);
 
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { categories, setCategories } = useContext(DataContext);
+    const [loading, setLoading] = useState(categories.length == 0);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:5000/budget-app/api/category/get", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Origin': 'http://localhost:3000',
-                "Authorization": `Bearer ${token}`
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Network error`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            setCategories(data.categories);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error("Problem w/ fetch");
-            setError(error);
-            setLoading(false);
-        })
-    }, []);
+        if (categories.length === 0) {
+            fetch("http://localhost:5000/budget-app/api/category/get", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Origin': 'http://localhost:3000',
+                    "Authorization": `Bearer ${token}`
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network error`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setCategories(data.categories);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("Problem w/ fetch");
+                setError(error);
+                setLoading(false);
+            })
+        }
+    }, [categories, setCategories, token]);
 
     if (loading) { 
         return <div>Loading...</div>;

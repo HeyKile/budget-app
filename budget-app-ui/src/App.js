@@ -7,6 +7,7 @@ import CategoryCreator from './components/CategoryCreator';
 import CategoriesDisplay from './components/CategoriesDisplay';
 import NavBar from './components/NavBar';
 import UserContext from "./components/UserContext";
+import { DataProvider } from './components/DataContext';
 
 function App() {
 
@@ -85,7 +86,9 @@ function App() {
         <div className="App">
           <h1>Hello, {user.username}</h1>
           <ToolBar setUser={setUser} setToken={setToken}/>
-          <NavBar/>
+          <DataProvider>
+            <NavBar/>
+          </DataProvider>
         </div>
       </UserContext.Provider>
     </UserTokenContext.Provider>

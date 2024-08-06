@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserTokenContext from "./UserTokenContext";
+import { DataContext } from "./DataContext";
 
 function PurchaseCreator({ user, setShowPurchaseCreator }) {
     const token = useContext(UserTokenContext);
@@ -8,36 +9,40 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
     const [date, setDate] = useState("");
     const [curCategory, setCurCategory] = useState(0);
     const [statusMsg, setStatusMsg] = useState("");
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // const [categories, setCategories] = useState([]);
+    const { categories, setCategories } = useContext(DataContext);
+    // const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(categories.length === 0);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:5000/budget-app/api/category/get", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Origin': 'http://localhost:3000',
-                "Authorization": `Bearer ${token}`
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Network error`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            setCategories(data.categories);
-            setCurCategory(data.categories[0]);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error(error);
-            setError(error);
-            setLoading(false);
-        });
-    }, []);
+        if (categories.length === 0) {
+            fetch("http://localhost:5000/budget-app/api/category/get", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Origin': 'http://localhost:3000',
+                    "Authorization": `Bearer ${token}`
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network error`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setCategories(data.categories);
+                setCurCategory(data.categories[0]);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error(error);
+                setError(error);
+                setLoading(false);
+            });
+        }
+    }, [categories, setCategories, token]);
 
     const createPurchase = (event) => {
         event.preventDefault();

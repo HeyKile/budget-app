@@ -172,7 +172,7 @@ def get_category_handler():
         return jsonify({ "category": [] }), HTTPStatus.OK
     else:
         return jsonify({ "category": category.to_dict() }), HTTPStatus.OK
-    
+
 @app.route("/budget-app/api/purchase/create", methods=["POST"])
 @jwt_required()
 def create_purchase_handler():

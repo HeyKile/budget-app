@@ -2,57 +2,45 @@ import React, { useContext, useEffect, useState } from "react";
 import UserTokenContext from "./UserTokenContext";
 import UserContext from "./UserContext";
 import { getCategories } from "../utils/CategoryUtils";
+import { DataContext } from "./DataContext";
 
 function RecentPurchaseDisplay() {
 
     const token = useContext(UserTokenContext);
     const user = useContext(UserContext);
 
-    const [purchases, setPurchases] = useState([]);
+    const { purchases, setPurchases } = useContext(DataContext);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(purchases.length === 0);
     
     useEffect(() => {
-        fetch("http://localhost:5000/budget-app/api/purchase/get-recents", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Origin': 'http://localhost:3000',
-                "Authorization": `Bearer ${token}`
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error retrieving purchases`)
-            }
-            return response.json();
-        })
-        .then(data => {
-            setPurchases(data.purchases);
-        })
-        .then(async () => {
-            // TODO: this is just bad, prob should do server side
-            const categories = await getCategories(token);
-            console.log(`Categories: ${categories}`);
-            const purchasesWithCategoryNames = purchases.map(purchase => {
-                const catName = categories.find((category) => category.id === purchase.catId);
-                return {
-                    "id": purchase.id,
-                    "desc": purchase.desc,
-                    "catName": catName,
-                    "datetime": purchase.datetime
-                };
-            });
-            setPurchases(purchasesWithCategoryNames);
-        })
-        .catch(error => {
-            console.error("Fetch error");
-            setError(error);
-        })
-        .finally(() => {
-            setLoading(false);
-        });
-    }, [token]);
+        if (purchases.length === 0) {
+            fetch("http://localhost:5000/budget-app/api/purchase/get-recents", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Origin': 'http://localhost:3000',
+                    "Authorization": `Bearer ${token}`
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error retrieving purchases`)
+                }
+                return response.json();
+            })
+            .then(data => {
+                setPurchases(data.purchases);
+            })
+            .catch(error => {
+                console.error("Fetch error");
+                setError(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });   
+        }
+    }, [purchases, setPurchases, token]);
 
     if (loading) { 
         return <div>Loading...</div>;
@@ -68,7 +56,7 @@ function RecentPurchaseDisplay() {
             <ul>
                 {purchases.length > 0 ? (
                     purchases.map(purchase => (
-                        <li key={purchase.id}>({purchase.catName}) {purchase.desc} on {purchase.datetime}</li>
+                        <li key={purchase.id}>{purchase.desc} on {purchase.datetime}</li>
                     ))
                 ) : (
                     <li>No purchases found</li>
