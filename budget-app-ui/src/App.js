@@ -85,8 +85,6 @@ function App() {
         <div className="App">
           <h1>Hello, {user.username}</h1>
           <ToolBar setUser={setUser} setToken={setToken}/>
-          {/* <CategoryCreator user={user} />
-          <CategoriesDisplay/> */}
           <NavBar/>
         </div>
       </UserContext.Provider>

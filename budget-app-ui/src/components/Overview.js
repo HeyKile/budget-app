@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserTokenContext from "./UserTokenContext";
 import PurchaseCreator from "./PurchaseCreator";
+import RecentPurchaseDisplay from "./DisplayRecentPurchase";
 import PurchaseDisplay from "./PurchaseDisplay";
 
 function Overview() {
@@ -12,6 +13,7 @@ function Overview() {
             <button onClick={() => setShowPurchaseCreator(true)}>Create New Purchase</button>
             {showPurchaseCreator && <PurchaseCreator setShowPurchaseCreator={setShowPurchaseCreator}/>}
             <div className="recent-purchases-container">
+                <RecentPurchaseDisplay/>
                 <PurchaseDisplay/>
             </div>
         </div>

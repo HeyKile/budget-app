@@ -15,3 +15,9 @@ def get_purchases_by_user_id(user_id):
         return db.session.query(Purchase).filter_by(user_id=user_id).all()
     except Exception as _:
         return None
+    
+def get_recent_purchases_by_user_id(user_id):
+    try:
+        return db.session.query(Purchase).filter_by(user_id=user_id).order_by(Purchase.datetime.desc()).limit(5).all()
+    except Exception as _:
+        return None

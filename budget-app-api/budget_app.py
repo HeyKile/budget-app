@@ -12,8 +12,8 @@ from services.user_service import create_user, get_user_by_id, get_users, valida
 from werkzeug.security import generate_password_hash
 from datetime import datetime, timedelta
 from flask_cors import CORS, cross_origin
-from services.category_service import create_category, get_all_categories, get_categories_by_id, get_category_by_id
-from services.purchase_service import create_purchase, get_purchases_by_user_id
+from services.category_service import create_category, get_all_categories, get_categories_by_id, get_category_by_cat_id, get_category_by_id
+from services.purchase_service import create_purchase, get_purchases_by_user_id, get_recent_purchases_by_user_id
 
 app = Flask(__name__)
 app.debug = True
@@ -154,6 +154,25 @@ def get_categories_handler():
     else:
         return jsonify({ "categories": [category.to_dict() for category in categories] }), HTTPStatus.OK
     
+@app.route("/budget-app/api/category/get-specific", methods=["GET"])
+@jwt_required()
+def get_category_handler():
+    if request.method == "OPTIONS":
+        return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
+    
+    user_id = get_jwt_identity()
+    if get_user_by_id(user_id) is None:
+        return jsonify({"message": "user cannot be found"}), HTTPStatus.GONE
+    
+    if not request.json["catId"]:
+        return jsonify({"message": "No category specified"}), HTTPStatus.BAD_REQUEST
+    
+    category = get_category_by_cat_id(user_id=user_id, cat_id=request.json["catId"])
+    if category is None:
+        return jsonify({ "category": [] }), HTTPStatus.OK
+    else:
+        return jsonify({ "category": category.to_dict() }), HTTPStatus.OK
+    
 @app.route("/budget-app/api/purchase/create", methods=["POST"])
 @jwt_required()
 def create_purchase_handler():
@@ -206,6 +225,22 @@ def get_purchases_handler():
         return jsonify({"message": "user cannot be found"}), HTTPStatus.UNAUTHORIZED
     
     purchases = get_purchases_by_user_id(user_id=user_id)
+    if purchases == None:
+        return jsonify({"purchases": []}), HTTPStatus.OK
+    else:
+        return jsonify({"purchases": [purchase.to_dict() for purchase in purchases]}), HTTPStatus.OK
+
+@app.route("/budget-app/api/purchase/get-recents", methods=["GET"])
+@jwt_required()
+def get_recent_purchases_handler():
+    if request.method == "OPTIONS":
+        return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
+    
+    user_id = get_jwt_identity()
+    if get_user_by_id(user_id) is None:
+        return jsonify({"message": "user cannot be found"}), HTTPStatus.UNAUTHORIZED
+    
+    purchases = get_recent_purchases_by_user_id(user_id=user_id)
     if purchases == None:
         return jsonify({"purchases": []}), HTTPStatus.OK
     else:

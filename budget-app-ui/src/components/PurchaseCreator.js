@@ -36,7 +36,7 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
             console.error(error);
             setError(error);
             setLoading(false);
-        })
+        });
     }, []);
 
     const createPurchase = (event) => {
