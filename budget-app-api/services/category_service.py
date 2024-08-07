@@ -8,7 +8,8 @@ def create_category(user_id, name, budget):
         db.session.commit()
         return True
     except Exception as e:
-        return str(e)
+        print(e)
+        return None
     
 def get_categories_by_id(user_id):
     try:
@@ -20,17 +21,20 @@ def get_categories_by_id(user_id):
 def get_all_categories():
     try:
         return db.session.query(Category).all()
-    except Exception as _:
+    except Exception as e:
+        print(e)
         return None
     
 def get_category_by_id(cat_id):
     try:
         return db.session.query(Category).filter_by(id=cat_id).first()
-    except Exception as _:
+    except Exception as e:
+        print(e)
         return None
     
 def get_category_by_cat_id(user_id, cat_id):
     try:
         return db.session.query(Category).filter_by(id=cat_id, user_id=user_id).first()
-    except Exception as _:
+    except Exception as e:
+        print(e)
         return None
