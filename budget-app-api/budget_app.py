@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime, timedelta
 from flask_cors import CORS, cross_origin
 from services.category_service import create_category, get_all_categories, get_categories_by_id, get_category_by_cat_id, get_category_by_id
-from services.purchase_service import create_purchase, get_purchases_by_user_id, get_recent_purchases_by_user_id
+from services.purchase_service import create_purchase, get_purchases_by_user_id, get_purchases_in_month, get_recent_purchases_by_user_id
 
 app = Flask(__name__)
 app.debug = True
@@ -245,6 +245,30 @@ def get_recent_purchases_handler():
         return jsonify({"purchases": []}), HTTPStatus.OK
     else:
         return jsonify({"purchases": [purchase.to_dict() for purchase in purchases]}), HTTPStatus.OK
+    
+@app.route("/budget-app/api/overview/graph-info", methods=["GET"])
+@jwt_required()
+def get_overview_graph_info_handler():
+    if request.method == "OPTIONS":
+        return make_response(jsonify({"message": "CORS preflight"}), HTTPStatus.OK)
+    
+    user_id = get_jwt_identity()
+    if get_user_by_id(user_id) is None:
+        return jsonify({"message": "user cannot be found"}), HTTPStatus.UNAUTHORIZED
+    
+    current_date = datetime.now()
+    purchases = get_purchases_in_month(user_id=user_id, current_month=current_date.month, current_year=current_date.year)
+    if purchases is None:
+        return jsonify({"purchases": []}), HTTPStatus.OK
+    else:
+        purchases_array = []
+        for group in purchases:
+            current_category = []
+            for purchase in group:
+                current_category.append(purchase.to_dict())
+            purchases_array.append(current_category)
+        print(purchases_array)
+        return jsonify({"purchases": purchases_array}), HTTPStatus.OK
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
