@@ -13,36 +13,41 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
     const [error, setError] = useState("");
 
     useEffect(() => {
+        // if (categories.length === 0) {
+        //     fetch("http://localhost:5000/budget-app/api/category/get", {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             'Origin': 'http://localhost:3000',
+        //             "Authorization": `Bearer ${token}`
+        //         },
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error(`Network error`);
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //         setCategories(data.categories);
+        //         if (data.categories.length === 0) {
+        //             setCurCategory(data.categories[0]);
+        //             setError("Please create a category before logging a purchase!")
+        //         } else {
+        //             setError("");
+        //         }
+        //         setLoading(false);
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //         setError(error);
+        //         setLoading(false);
+        //     });
+        // }
         if (categories.length === 0) {
-            fetch("http://localhost:5000/budget-app/api/category/get", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Origin': 'http://localhost:3000',
-                    "Authorization": `Bearer ${token}`
-                },
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Network error`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setCategories(data.categories);
-                if (data.categories.length === 0) {
-                    setCurCategory(data.categories[0]);
-                    setError("Please create a category before logging a purchase!")
-                } else {
-                    setError("");
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error(error);
-                setError(error);
-                setLoading(false);
-            });
+            setLoading(true);
+        } else {
+            setLoading(false);
         }
     }, [categories, setCategories, token]);
 

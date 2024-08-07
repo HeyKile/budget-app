@@ -12,31 +12,36 @@ function PurchaseDisplay() {
     const [loading, setLoading] = useState(purchases.length === 0);
     
     useEffect(() => {
-        if (purchases.length === 0) {
-            fetch("http://localhost:5000/budget-app/api/purchase/get", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Origin': 'http://localhost:3000',
-                    "Authorization": `Bearer ${token}`
-                },
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error retrieving purchases`)
-                }
-                return response.json();
-            })
-            .then(data => {
-                setPurchases(data.purchases);
-            })
-            .catch(error => {
-                console.error("Fetch error");
-                setError(error);
-            })
-            .finally(() => {
-                setLoading(false)
-            });   
+        // if (purchases.length === 0) {
+        //     fetch("http://localhost:5000/budget-app/api/purchase/get", {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             'Origin': 'http://localhost:3000',
+        //             "Authorization": `Bearer ${token}`
+        //         },
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error(`Error retrieving purchases`)
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //         setPurchases(data.purchases);
+        //     })
+        //     .catch(error => {
+        //         console.error("Fetch error");
+        //         setError(error);
+        //     })
+        //     .finally(() => {
+        //         setLoading(false)
+        //     });   
+        // }
+        if (categories.length === 0 || purchases.length === 0) {
+            setLoading(true);
+        } else {
+            setLoading(false);
         }
     }, [purchases, setPurchases, token]);
 
