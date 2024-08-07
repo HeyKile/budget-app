@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import UserTokenContext from "../UserTokenContext";
+import { UserTokenContext } from "../Contexts";
 
 function Logout({ setToken, setUser }) {
     const token = useContext(UserTokenContext);

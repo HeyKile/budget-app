@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import UserTokenContext from "./UserTokenContext";
-import UserContext from "./UserContext";
-import { getCategories } from "../utils/CategoryUtils";
-import { DataContext } from "./DataContext";
+import { getCategories } from "../../../utils/CategoryUtils";
+import { UserTokenContext, UserContext, DataContext } from "../../Contexts";
 
 function RecentPurchaseDisplay() {
 
     const token = useContext(UserTokenContext);
     const user = useContext(UserContext);
-
     const { purchases, setPurchases } = useContext(DataContext);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(purchases.length === 0);

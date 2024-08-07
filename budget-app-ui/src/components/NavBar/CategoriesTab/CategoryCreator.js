@@ -1,27 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import UserTokenContext from './UserTokenContext';
+import { UserTokenContext, UserContext } from '../../Contexts';
 
-function CategoryCreator({ user }) {
+function CategoryCreator({ setShowCategoryCreator }) {
 
     const token = useContext(UserTokenContext);
+    const user = useContext(UserContext);
 
     const [name, setName] = useState("");
     const [budget, setBudget] = useState("");
     const [error, setError] = useState(null);
     const [statusMsg, setStatusMsg] = useState(null);
-
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-    };
-
-    const handleBudgetChange = (event) => {
-        const value = parseInt(event.target.value);
-        if (!isNaN(value)) {
-            setBudget(value);
-        } else {
-            setBudget("");
-        }
-    };
 
     const createCategory = (event) => {
         console.log(JSON.stringify({
@@ -37,7 +25,7 @@ function CategoryCreator({ user }) {
                 'Origin': 'http://localhost:3000',
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ "user_id": userId, name, budget })
+            body: JSON.stringify({ name, budget })
         })
         .then(response => {
             if (!response.ok) {
@@ -64,11 +52,11 @@ function CategoryCreator({ user }) {
             <form onSubmit={createCategory}>
                 <label>
                     Name:
-                    <input type="text" value={name} name="name" onChange={handleNameChange}/>
+                    <input type="text" value={name} name="name" onChange={(e) => setName(e.target.value)}/>
                 </label>
                 <label>
                     Budget:
-                    <input type="text" value={budget} name="budget" onChange={handleBudgetChange}/>
+                    <input type="number" value={budget} name="budget" onChange={(e) => setBudget(e.target.value)}/>
                 </label>
                 <button type="submit">Create</button>
             </form>

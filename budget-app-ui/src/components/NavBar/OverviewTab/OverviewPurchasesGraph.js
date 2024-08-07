@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import UserTokenContext from "./UserTokenContext";
-import { DataContext } from "./DataContext";
+import { UserTokenContext, DataContext } from "../../Contexts";
 import { Line, Bar } from "react-chartjs-2";
 import { 
     Chart as ChartJS,
@@ -13,8 +12,8 @@ import {
     Legend,
     BarElement
  } from "chart.js";
-import { getCategories } from "../utils/CategoryUtils";
-import { getPurchasesByCategory } from "../utils/PurchaseUtils";
+import { getCategories } from "../../../utils/CategoryUtils";
+import { getPurchasesByCategory } from "../../../utils/PurchaseUtils";
 
  ChartJS.register(
     CategoryScale,

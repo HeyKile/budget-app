@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import UserTokenContext from "../UserTokenContext";
+import UserTokenContext from "../Contexts/UserTokenContext";
 import Logout from "./Logout";
 
 function ToolBar({ setToken, setUser }) {

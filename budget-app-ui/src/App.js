@@ -1,17 +1,8 @@
 import React, { useState, useEffect, createContext } from 'react';
-import Login from './components/Login';
 import ToolBar from './components/Toolbar/ToolBar';
-import UserTokenContext from './components/UserTokenContext';
-import Register from './components/Register';
-import CategoryCreator from './components/CategoryCreator';
-import CategoriesDisplay from './components/CategoriesDisplay';
-import NavBar from './components/NavBar';
-import UserContext from "./components/UserContext";
-import { DataProvider } from './components/DataContext';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import NavBar from './components/NavBar/NavBar';
+import { Login, Register } from './components/Auth';
+import { UserTokenContext, UserContext, DataProvider } from './components/Contexts';
 
 function App() {
 

@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import UserTokenContext from "./UserTokenContext";
-import PurchaseCreator from "./PurchaseCreator";
-import RecentPurchaseDisplay from "./DisplayRecentPurchase";
-import PurchaseDisplay from "./PurchaseDisplay";
+import PurchaseCreator from "../PurchasesTab/PurchaseCreator";
+import RecentPurchaseDisplay from "./RecentPurchaseDisplay";
 import OverviewPurchasesGraph from "./OverviewPurchasesGraph";
-import { DataContext } from "./DataContext";
+import { UserTokenContext, DataContext } from "../../Contexts";
 
 function Overview() {
     const token = useContext(UserTokenContext);

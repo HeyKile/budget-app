@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import UserTokenContext from "./UserTokenContext";
-import { DataContext } from "./DataContext";
+import { UserTokenContext, DataContext } from "../../Contexts";
 
 function PurchaseCreator({ user, setShowPurchaseCreator }) {
     const token = useContext(UserTokenContext);

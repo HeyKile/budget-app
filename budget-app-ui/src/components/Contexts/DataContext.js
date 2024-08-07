@@ -1,5 +1,4 @@
 import React, { useState, createContext } from "react";
-import UserTokenContext from "./UserTokenContext";
 
 export const DataContext = createContext();
 
