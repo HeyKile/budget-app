@@ -13,7 +13,7 @@ async function getCategories(token) {
         },
     });
     if (!response.ok) {
-        return null;
+        return [];
     }
     const data = await response.json();
     return data.categories;

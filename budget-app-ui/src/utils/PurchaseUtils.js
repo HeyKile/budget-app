@@ -1,3 +1,19 @@
+export async function getPurchases(token) {
+    const response = await fetch("http://localhost:5000/budget-app/api/purchase/get", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            'Origin': 'http://localhost:3000',
+            "Authorization": `Bearer ${token}`
+        },
+    });
+    if (!response.ok) {
+        return [];
+    }
+    const data = await response.json();
+    return data.purchases;
+}
+
 export async function getPurchasesByCategory(token) {
     const response = await fetch("http://localhost:5000/budget-app/api/overview/graph-info", {
         method: "GET",
@@ -16,7 +32,7 @@ export async function getPurchasesByCategory(token) {
 
 export function getPurchaseCategoryName(catId, categories) {
     const category = categories.find(category => category.id === catId);
-    return category.name;
+    return category ? category.name : 'Unknown Category';
 }
 
 export function formatDate(date) {
