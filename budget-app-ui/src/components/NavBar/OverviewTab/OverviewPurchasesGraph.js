@@ -43,13 +43,6 @@ function OverviewPurchasesGraph() {
             try {
                 const sortedPurchasesByCategory = await getPurchasesByCategory(token);
                 setSortedPurchases(sortedPurchasesByCategory);
-                console.log(sortedPurchasesByCategory);
-                for (let i = 0; i < sortedPurchasesByCategory.length; i++) {
-                    console.log(`CatId: ${sortedPurchasesByCategory[i][0].cat_id}`)
-                    for (let j = 0; j < sortedPurchasesByCategory[i].length; j++) {
-                        console.log(sortedPurchasesByCategory[i][j]);
-                    }
-                }
             } catch (error) {
                 console.log(error);
             } finally {

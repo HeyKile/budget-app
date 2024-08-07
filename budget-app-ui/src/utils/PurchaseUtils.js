@@ -13,3 +13,13 @@ export async function getPurchasesByCategory(token) {
     const data = await response.json();
     return data.purchases;
 }
+
+export function getPurchaseCategoryName(catId, categories) {
+    const category = categories.find(category => category.id === catId);
+    return category.name;
+}
+
+export function formatDate(date) {
+    const DATE_STR_LEN_BEFORE_TIME = 16;
+    return date.substring(0, DATE_STR_LEN_BEFORE_TIME);
+}

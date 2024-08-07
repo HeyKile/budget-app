@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import Overview from "./OverviewTab/Overview";
-import PurchaseDisplay from "./PurchasesTab/PurchaseDisplay";
-import { CategoriesTab } from "./CategoriesTab"
+import { Overview } from "./OverviewTab";
+import { CategoriesTab } from "./CategoriesTab";
+import { PurchasesTab } from "./PurchasesTab";
 
 const TABS = {
     OVERVIEW: 0,
@@ -19,7 +19,7 @@ function NavBar() {
             <button onClick={() => setCurTab(TABS.PURCHASES)}>Purchases</button>
             <button onClick={() => setCurTab(TABS.CATEGORIES)}>Categories</button>
             {curTab === TABS.OVERVIEW && <Overview />}
-            {curTab === TABS.PURCHASES && <PurchaseDisplay />}
+            {curTab === TABS.PURCHASES && <PurchasesTab />}
             {curTab === TABS.CATEGORIES && <CategoriesTab />}
         </div>
     );

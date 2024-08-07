@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserTokenContext, UserContext, DataContext } from "../../Contexts";
+import { formatDate, getPurchaseCategoryName } from "../../../utils/PurchaseUtils";
 
 function PurchaseDisplay() {
 
     const token = useContext(UserTokenContext);
     const user = useContext(UserContext);
     const { purchases, setPurchases } = useContext(DataContext);
+    const { categories, setCategories } = useContext(DataContext);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(purchases.length === 0);
     
@@ -52,7 +54,7 @@ function PurchaseDisplay() {
             <ul>
                 {purchases.length > 0 ? (
                     purchases.map(purchase => (
-                        <li key={purchase.id}>{purchase.desc}: ${purchase.amount} on {purchase.date} in category {purchase.cat_id}</li>
+                        <li key={purchase.id}>({getPurchaseCategoryName(purchase.cat_id, categories)}) {purchase.desc}: ${purchase.amount} on {formatDate(purchase.datetime)}</li>
                     ))
                 ) : (
                     <li>No purchases found</li>

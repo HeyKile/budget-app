@@ -1,8 +1,10 @@
 import { getCategories, getCategoryByCatId } from "./CategoryUtils";
-import { getPurchasesByCategory } from "./PurchaseUtils";
+import { getPurchasesByCategory, getPurchaseCategoryName, formatDate } from "./PurchaseUtils";
 
 export {
     getCategories,
     getCategoryByCatId,
-    getPurchasesByCategory
+    getPurchasesByCategory,
+    getPurchaseCategoryName,
+    formatDate
 };

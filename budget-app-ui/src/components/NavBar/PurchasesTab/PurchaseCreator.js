@@ -64,10 +64,6 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
             setStatusMsg("Please select a category for your purchase");
             return;
         }
-        console.log(desc);
-        console.log(amount);
-        console.log(date);
-        console.log(curCategory);
         fetch("http://localhost:5000/budget-app/api/purchase/create", {
             method: "POST",
             headers: {
