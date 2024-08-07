@@ -61,6 +61,7 @@ function CategoryCreator({ setShowCategoryCreator }) {
                 <button type="submit">Create</button>
             </form>
             {statusMsg && <p>{statusMsg}</p>}
+            <button onClick={() => setShowCategoryCreator(false)}>X</button>
         </div>
     );
 }

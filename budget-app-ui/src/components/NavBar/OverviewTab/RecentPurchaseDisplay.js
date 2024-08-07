@@ -9,6 +9,7 @@ function RecentPurchaseDisplay() {
     const { purchases, setPurchases } = useContext(DataContext);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(purchases.length === 0);
+    const [noPurchases, setNoPurchases] = useState(false);
     
     useEffect(() => {
         if (purchases.length === 0) {
@@ -28,6 +29,9 @@ function RecentPurchaseDisplay() {
             })
             .then(data => {
                 setPurchases(data.purchases);
+                // if (data.purchases.length === 0) {
+                //     setNoPurchases(true);
+                // }
             })
             .catch(error => {
                 console.error("Fetch error");
@@ -45,6 +49,10 @@ function RecentPurchaseDisplay() {
 
     if (error) {
         return <div>Error: {error.message}</div>;
+    }
+
+    if (noPurchases || purchases.length === 0) {
+        return <div>No purchases found</div>
     }
 
     return (

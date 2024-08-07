@@ -182,19 +182,19 @@ def create_purchase_handler():
     user_id = get_jwt_identity()
     if get_user_by_id(user_id) is None:
         return jsonify({"message": "user cannot be found"}), HTTPStatus.UNAUTHORIZED
-
+    
     purchase_data = request.json
     print(purchase_data)
     if (
         not purchase_data["desc"]
         or not purchase_data["amount"]
         or not purchase_data["date"]
-        or not purchase_data["catId"]
+        or not purchase_data["cat_id"]
     ):
         return jsonify({"message": "all fields required"}), HTTPStatus.BAD_REQUEST
         
-    categorey = get_category_by_id(cat_id=purchase_data["catId"])
-    if categorey is None:
+    category = get_category_by_id(cat_id=purchase_data["cat_id"])
+    if category is None:
         return jsonify({"message": "category can not be found"}), HTTPStatus.GONE
 
     try:
@@ -204,7 +204,7 @@ def create_purchase_handler():
 
     res = create_purchase(
         user_id=user_id,
-        cat_id=categorey.id,
+        cat_id=category.id,
         desc=purchase_data["desc"],
         amount=purchase_data["amount"],
         datetime=purchase_datetime
@@ -245,7 +245,8 @@ def get_recent_purchases_handler():
         return jsonify({"purchases": []}), HTTPStatus.OK
     else:
         return jsonify({"purchases": [purchase.to_dict() for purchase in purchases]}), HTTPStatus.OK
-    
+
+# TODO: finish working on graph
 @app.route("/budget-app/api/overview/graph-info", methods=["GET"])
 @jwt_required()
 def get_overview_graph_info_handler():
@@ -267,7 +268,6 @@ def get_overview_graph_info_handler():
             for purchase in group:
                 current_category.append(purchase.to_dict())
             purchases_array.append(current_category)
-        print(purchases_array)
         return jsonify({"purchases": purchases_array}), HTTPStatus.OK
 
 if __name__ == '__main__':

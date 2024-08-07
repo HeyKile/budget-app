@@ -15,7 +15,7 @@ def get_categories_by_id(user_id):
     try:
         return db.session.query(Category).filter_by(user_id=user_id).all()
     except Exception as e:
-        print(e)
+        print(f"Error in get_categories_by_id: \n${e}")
         return None
 
 def get_all_categories():

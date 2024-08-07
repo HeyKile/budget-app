@@ -61,6 +61,7 @@ function App() {
     );
   }
 
+  // TODO: make this experience more user-friendly
   if (!token) {
     return (
       <div>

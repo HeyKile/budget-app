@@ -13,7 +13,7 @@ function Overview() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (categories.length === 0 || purchases.length === 0) {
+        if (categories.length === 0) {
             const fetchCategories = fetch("http://localhost:5000/budget-app/api/category/get", {
                 method: "GET",
                 headers: {

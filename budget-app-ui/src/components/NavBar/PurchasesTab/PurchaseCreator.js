@@ -6,11 +6,9 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
     const [desc, setDesc] = useState("");
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState("");
-    const [curCategory, setCurCategory] = useState(0);
     const [statusMsg, setStatusMsg] = useState("");
-    // const [categories, setCategories] = useState([]);
     const { categories, setCategories } = useContext(DataContext);
-    // const [loading, setLoading] = useState(true);
+    const [curCategory, setCurCategory] = useState({});
     const [loading, setLoading] = useState(categories.length === 0);
     const [error, setError] = useState("");
 
@@ -32,7 +30,12 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
             })
             .then(data => {
                 setCategories(data.categories);
-                setCurCategory(data.categories[0]);
+                if (data.categories.length === 0) {
+                    setCurCategory(data.categories[0]);
+                    setError("Please create a category before logging a purchase!")
+                } else {
+                    setError("");
+                }
                 setLoading(false);
             })
             .catch(error => {
@@ -45,11 +48,26 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
 
     const createPurchase = (event) => {
         event.preventDefault();
+        if (desc === "") {
+            setStatusMsg("Please enter a description for your purchase");
+            return;
+        }
+        if (amount === 0) {
+            setStatusMsg("Please enter an amount for your purchase");
+            return;
+        }
+        if (date === "") {
+            setStatusMsg("Please enter a date for your purchases");
+            return;
+        }
+        if (Object.keys(curCategory).length === 0) {
+            setStatusMsg("Please select a category for your purchase");
+            return;
+        }
         console.log(desc);
         console.log(amount);
         console.log(date);
         console.log(curCategory);
-        const catId = curCategory.id;
         fetch("http://localhost:5000/budget-app/api/purchase/create", {
             method: "POST",
             headers: {
@@ -58,11 +76,11 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
                 "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
-                desc,
-                amount,
-                date,
-                catId
-            }),
+                "desc": desc,
+                "amount": amount,
+                "date": date,
+                "cat_id": curCategory,
+            })
         })
         .then(response => {
             if (!response.ok) {
@@ -70,12 +88,12 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
             }
             return response.json();
         })
-        .then(data => {
+        .then(() => {
             setStatusMsg("Successfully created purchase");
             setDesc("");
             setAmount(0);
             setDate("");
-            setCurCategory(0);
+            setCurCategory({});
         })
         .catch(error => {
             console.error(error);
@@ -83,7 +101,7 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
         });
     }
 
-    if (loading) { 
+    if (loading || categories.length === 0) { 
         return <div>Loading...</div>;
     }
 
@@ -98,19 +116,37 @@ function PurchaseCreator({ user, setShowPurchaseCreator }) {
             <form onSubmit={createPurchase}>
                 <label>
                     Description:
-                    <input type="text" value={desc} name="desc" onChange={(e) => setDesc(e.target.value)}/>
+                    <input 
+                        type="text"
+                        value={desc}
+                        name="desc"
+                        onChange={(e) => setDesc(e.target.value)}
+                        autoComplete="off"
+                    />
                 </label>
                 <label>
                     Amount:
-                    <input type="number" value={amount} name="amount" onChange={(e) => setAmount(e.target.value)}/>
+                    <input
+                        type="number"
+                        value={amount}
+                        name="amount"
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
                 </label>
                 <label>
                     Date:
-                    <input type="date" value={date} name="date" onChange={(e) => setDate(e.target.value)}/>
+                    <input
+                        type="date"
+                        value={date} name="date"
+                        onChange={(e) => setDate(e.target.value)}
+                    />
                 </label>
                 <label>
                     Category:
-                    <select value={curCategory} onChange={(e) => setCurCategory(e.target.value)}>
+                    <select
+                        value={curCategory}
+                        onChange={(e) => setCurCategory(e.target.value)}>
+                        <option></option>
                         {categories.map(category => (
                             <option key={category.id} value={category.id}>{category.name} (${category.budget})</option>
                         ))}
