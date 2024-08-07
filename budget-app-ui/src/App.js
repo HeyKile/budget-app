@@ -8,6 +8,10 @@ import CategoriesDisplay from './components/CategoriesDisplay';
 import NavBar from './components/NavBar';
 import UserContext from "./components/UserContext";
 import { DataProvider } from './components/DataContext';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 function App() {
 
