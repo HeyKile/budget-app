@@ -70,7 +70,7 @@ function Overview() {
         <div className="overview-container">
             <button onClick={() => setShowPurchaseCreator(true)}>Create New Purchase</button>
             {showPurchaseCreator && <PurchaseCreator setShowPurchaseCreator={setShowPurchaseCreator}/>}
-            <div className="recent-purchases-container">
+            <div className="overview-items-container">
                 <RecentPurchaseDisplay/>
                 <OverviewPurchasesGraph/>
             </div>

@@ -81,7 +81,16 @@ function OverviewPurchasesGraph() {
         };
     }
 
-    const options = {}
+    const options = {
+        scales: {
+            x: {
+                stacked: true
+            },
+            y: {
+                stacked: true
+            }
+        }
+    };
     const barData = {
         labels: [
             "rent",
@@ -101,24 +110,6 @@ function OverviewPurchasesGraph() {
             }
         ]
     }
-
-    const why = {
-        labels: [
-            "Gas",
-            "Utilities",
-            "Food",
-            "Rent"
-        ],
-        datasets: [
-            {
-                label: "Amount spent",
-                data: [0, 150, 0, 1200],
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-                boarderColor: "rgba(54, 162, 235, 1)",
-                boardWidth: 1
-            }
-        ]
-    };
 
     const data = {
         labels: [

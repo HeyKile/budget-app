@@ -61,7 +61,7 @@ function RecentPurchaseDisplay() {
     }
 
     return (
-        <div>
+        <div className="recent-purchases-container">
             <h2>Recent Purchases</h2>
             <ul>
                 {purchases.length > 0 ? (

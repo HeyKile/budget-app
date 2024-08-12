@@ -1,5 +1,5 @@
 body {
-  margin: 10;
+  margin: .7em;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -33,5 +33,28 @@ form {
     select {
       text-align: left;
     }
+  }
+}
+
+.overview-container {
+
+  .overview-items-container {
+    display: flex;
+    flex-direction: row;
+
+    .recent-purchases-container {
+      min-width: none;
+      max-width: 30%;
+      flex: 0 1 auto;
+      margin-right: .7em;
+    }
+
+    .overview-purchases-graph-container {
+      min-width: none;
+      max-width: 70%;
+      flex: 2 0 auto;
+      margin-right: .7em;
+    }
+
   }
 }
