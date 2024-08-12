@@ -14,6 +14,7 @@ import {
  } from "chart.js";
 import { getCategories } from "../../../utils/CategoryUtils";
 import { getPurchaseCategoryName, getPurchasesByCategory } from "../../../utils/PurchaseUtils";
+import { createGraphData } from "../../../utils";
 
  ChartJS.register(
     CategoryScale,
@@ -31,6 +32,7 @@ function OverviewPurchasesGraph() {
     const token = useContext(UserTokenContext);
     const { categories, setCategories } = useContext(DataContext);
     const { purchases, setPurchases } = useContext(DataContext);
+    const { hasLoaded, setHadLoaded } = useContext(DataContext);
     const [loading, setLoading] = useState(categories.length === 0);
     const [sortedPurchases, setSortedPurchases] = useState([]);
     const [error, setError] = useState(null);
@@ -54,7 +56,7 @@ function OverviewPurchasesGraph() {
         fetchData();
     }, [purchases, setPurchases, categories, setCategories, token]);
 
-    function createGraphData() {
+    function createGraphDataPrime() {
         if (categories.length === 0 || categories) {
             return;
         }
@@ -123,7 +125,7 @@ function OverviewPurchasesGraph() {
         ]
     }
 
-    if (loading) {
+    if (loading || !hasLoaded) {
         return (
             <h2>Loading...</h2>
         );
@@ -134,17 +136,14 @@ function OverviewPurchasesGraph() {
             <h2>No data yet this month!</h2>
         );
     } else {
-        graphData = createGraphData();
-        console.log(graphData);
-        console.log(purchases);
-        console.log(categories);
+        graphData = createGraphData(categories, purchases);
     }
 
     return (
         <div className="overview-purchases-graph-container">
             <h1>Your Monthly Outlook</h1>
             {/* <Line options={options} data={data}/> */}
-            {graphData !== undefined && graphData.length === 0  && <Bar option={options} data={graphData} />}
+            {graphData !== undefined && graphData.length === 0  && <Bar option={options} data={barData} />}
         </div>
       );
 

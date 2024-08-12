@@ -10,19 +10,22 @@ export function DataProvider({ children }) {
     const token = useContext(UserTokenContext);
     const [categories, setCategories] = useState([]);
     const [purchases, setPurchases] = useState([]);
+    const [ hasLoaded, setHasLoaded ] = useState(false);
 
     useEffect(() => {
         async function fetchUserData() {
+            setHasLoaded(false);
             const categories_result = await getCategories(token);
             setCategories(categories_result);
             const purchases_result = await getPurchases(token);
             setPurchases(purchases_result);
+            setHasLoaded(true);
         }
         fetchUserData();
     }, [token]);
 
     return (
-        <DataContext.Provider value={{ categories, setCategories, purchases, setPurchases }}>
+        <DataContext.Provider value={{ categories, setCategories, purchases, setPurchases, hasLoaded, setHasLoaded }}>
             {children}
         </DataContext.Provider>
     );
