@@ -14,7 +14,7 @@ import {
  } from "chart.js";
 import { getCategories } from "../../../utils/CategoryUtils";
 import { getPurchaseCategoryName, getPurchasesByCategory } from "../../../utils/PurchaseUtils";
-import { createGraphData } from "../../../utils";
+import { createGraphData, getCurrentMonthPurchases } from "../../../utils";
 
  ChartJS.register(
     CategoryScale,
@@ -136,7 +136,8 @@ function OverviewPurchasesGraph() {
             <h2>No data yet this month!</h2>
         );
     } else {
-        graphData = createGraphData(categories, purchases);
+        // TODO: pass in recent purchases
+        graphData = createGraphData(categories, getCurrentMonthPurchases(purchases));
     }
 
     return (

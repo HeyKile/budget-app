@@ -1,5 +1,5 @@
 import { getCategories, getCategoryByCatId } from "./CategoryUtils";
-import { getPurchasesByCategory, getPurchaseCategoryName, formatDate } from "./PurchaseUtils";
+import { getPurchasesByCategory, getPurchaseCategoryName, formatDate, getCurrentMonthPurchases } from "./PurchaseUtils";
 import { createGraphData } from "./GraphUtils";
 
 export {
@@ -8,5 +8,6 @@ export {
     getPurchasesByCategory,
     getPurchaseCategoryName,
     formatDate,
-    createGraphData
+    createGraphData,
+    getCurrentMonthPurchases
 };
