@@ -101,6 +101,25 @@ function OverviewPurchasesGraph() {
             }
         ]
     }
+
+    const why = {
+        labels: [
+            "Gas",
+            "Utilities",
+            "Food",
+            "Rent"
+        ],
+        datasets: [
+            {
+                label: "Amount spent",
+                data: [0, 150, 0, 1200],
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                boarderColor: "rgba(54, 162, 235, 1)",
+                boardWidth: 1
+            }
+        ]
+    };
+
     const data = {
         labels: [
             "mon",
@@ -136,15 +155,16 @@ function OverviewPurchasesGraph() {
             <h2>No data yet this month!</h2>
         );
     } else {
-        // TODO: pass in recent purchases
         graphData = createGraphData(categories, getCurrentMonthPurchases(purchases));
+        console.log(graphData);
+        console.log(barData);
     }
 
     return (
         <div className="overview-purchases-graph-container">
             <h1>Your Monthly Outlook</h1>
             {/* <Line options={options} data={data}/> */}
-            {graphData !== undefined && graphData.length === 0  && <Bar option={options} data={barData} />}
+            {graphData !== undefined && <Bar option={options} data={graphData} />}
         </div>
       );
 
