@@ -10,14 +10,6 @@ function Overview() {
     const { categories, setCategories } = useContext(DataContext);
     const { purchases, setPurchases } = useContext(DataContext);
 
-    useEffect(() => {
-        if (categories.length === 0 || purchases.length === 0) {
-            setLoading(true);
-        } else {
-            setLoading(false);
-        }
-    }, [categories, purchases, setCategories, setPurchases, token]);
-
     return (
         <div className="overview-container">
             <button onClick={() => setShowPurchaseCreator(true)}>Create New Purchase</button>
@@ -25,9 +17,6 @@ function Overview() {
             <div className="overview-items-container">
                 <RecentPurchaseDisplay/>
                 <OverviewPurchasesGraph/>
-            </div>
-            <div>
-
             </div>
         </div>
     );
