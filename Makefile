@@ -13,6 +13,9 @@ initdb:
 test:
 	chmod +x tests.sh && ./tests.sh
 
+flask-venv-setup:
+	cd budget-app-ui && ls && cd ..
+
 flask-run:
 	cd budget-app-api && python3 budget_app.py
 
