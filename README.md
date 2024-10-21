@@ -25,6 +25,7 @@ Budget Beater is a web application allowing users to create spending categories,
 - Note: to leave the virtual environment, simply run `deactivate`
 
 ### 2. Setting Up The Front End
+- TBD: going to make the setup process seamless...
 
 ## Development
 While my schooling and personal projects have thought me basic DOM manipulation and other reactive web frameworks, this project was my first time working with React. Thus far, I can see why React is so widely used, being fairly easy to pick-up and understand. Overall, it made the front-end development experience straight-forward, and I did not struggle on learning the syntax and basic rules.
